@@ -1,0 +1,26 @@
+{
+  "title": {
+    "line1": "Wedding planning",
+    "line2": "tailored for you"
+  },
+  "features": [
+    {
+      "id": 1,
+      "title": "Exclusive Wedding planner",
+      "description": "Your story and your style guide us in creating a wedding that reflects who you are"
+    },
+    {
+      "id": 2,
+      "title": "Budget Optimisation",
+      "description": "We design celebrations that reflect your vision while optimising costs without compromising quality"
+    },
+    {
+      "id": 3,
+      "title": "Seamless Coordination",
+      "description": "Every detail is managed with precision, from concept to execution, ensuring a seamless and stress free experience"
+    }
+  ],
+  "button": {
+    "text": "CONNECT WITH AN EXPERT"
+  }
+}

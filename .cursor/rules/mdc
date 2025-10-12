@@ -1,0 +1,31 @@
+# Project Rules
+
+## Project Name
+Dream Avenue
+
+## Project Description
+Dream Avenue - A wedding planning and management platform
+
+## Code Style Guidelines
+- Use TypeScript for all components
+- Follow React best practices
+- Use functional components with hooks
+- Maintain consistent naming conventions
+- Keep components modular and reusable
+
+## Component Structure
+- Place UI components in `src/components/ui/`
+- Place section components in `src/components/sections/`
+- Each section should have its own directory
+
+## Naming Conventions
+- Use PascalCase for component files and names
+- Use camelCase for variables and functions
+- Use descriptive names that convey purpose
+
+## Development Guidelines
+- Ensure responsive design for all components
+- Optimize for performance
+- Follow accessibility best practices
+- Write clean, maintainable code
+

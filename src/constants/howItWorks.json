@@ -1,0 +1,23 @@
+{
+  "title": "How it works",
+  "steps": [
+    {
+      "id": 1,
+      "title": "Share requirements",
+      "description": "Share your event details with us date, budget, location, venue type, guest count, and any other preferences, so we can craft your perfect celebration.",
+      "isActive": true
+    },
+    {
+      "id": 2,
+      "title": "Get a presentation",
+      "description": "We'll create a personalized presentation with venue options, vendor recommendations, and a detailed timeline tailored to your vision.",
+      "isActive": false
+    },
+    {
+      "id": 3,
+      "title": "Book, Sit back and relax",
+      "description": "Once you approve the plan, we handle all the bookings and coordination. You can relax and enjoy your special day.",
+      "isActive": false
+    }
+  ]
+}
