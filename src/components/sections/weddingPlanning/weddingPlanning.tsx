@@ -13,7 +13,7 @@ export default function WeddingPlanning() {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        viewport={{ once: true }}
+        viewport={{ once: false }}
       >
         <Image
           src="/assets/desktop/wedding_planning.png"
@@ -38,7 +38,7 @@ export default function WeddingPlanning() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             style={{ fontFamily: 'Dream Avenue, Playfair Display, Georgia' }}
           >
             {WEDDING_PLANNING_CONSTANTS.title.line1}
@@ -66,7 +66,7 @@ export default function WeddingPlanning() {
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.2 }}
-                  viewport={{ once: true }}
+                  viewport={{ once: false }}
                 >
                   {/* Horizontal Arrow extending from vertical line */}
                   <Image

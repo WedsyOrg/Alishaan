@@ -4,19 +4,19 @@
     {
       "id": 1,
       "title": "Share requirements",
-      "description": "Share your event details with us date, budget, location, venue type, guest count, and any other preferences, so we can craft your perfect celebration.",
+      "description": "Share your event details with us — date, budget, location, \n venue type, guest count, and any other preferences — so we \n can craft your perfect celebration",
       "isActive": true
     },
     {
       "id": 2,
       "title": "Get a presentation",
-      "description": "We'll create a personalized presentation with venue options, vendor recommendations, and a detailed timeline tailored to your vision.",
+      "description": "Get the best deal on pricing for venue, decor,\n catering as per your taste",
       "isActive": false
     },
     {
       "id": 3,
       "title": "Book, Sit back and relax",
-      "description": "Once you approve the plan, we handle all the bookings and coordination. You can relax and enjoy your special day.",
+      "description": "Secure your date with a small advance within \n 7 days,and let us take care of every detail",
       "isActive": false
     }
   ]

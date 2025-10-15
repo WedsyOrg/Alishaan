@@ -1,0 +1,52 @@
+{
+  "branding": {
+    "mainName": "ALISHAAN",
+    "subtitle": "LUXURY WEDDINGS",
+    "tagline": "CURATED FOR PERFECTION"
+  },
+  "form": {
+    "title": "Let's personalize your experience",
+    "subtitle": "Tell us about your Wedding",
+    "fields": [
+      {
+        "label": "Name",
+        "placeholder": "Name"
+      },
+      {
+        "label": "When is your special day?",
+        "placeholder": "When is your special day ?",
+        "type": "date"
+      },
+      {
+        "label": "Phone number",
+        "placeholder": "Phone number",
+        "type": "tel"
+      }
+    ],
+    "budget": {
+      "label": "Please share your estimated budget for the event.",
+      "options": [
+        {
+          "value": "5-10",
+          "label": "5-10 Lakhs",
+          "selected": true
+        },
+        {
+          "value": "10-15",
+          "label": "10-15 Lakhs",
+          "selected": false
+        },
+        {
+          "value": "20+",
+          "label": "Above 20 Lakhs",
+          "selected": false
+        }
+      ]
+    },
+    "button": {
+      "text": "CAN'T WAIT TO START"
+    }
+  }
+}
+
+
