@@ -27,7 +27,7 @@ const Button = memo(function Button({
     'px-8 py-2 md:px-6 md:py-3 lg:px-8 lg:py-4',
     'text-sm md:text-base lg:text-lg',
     'font-medium font-Cinzel',
-    'rounded-lg md:rounded-xl',
+    'rounded-2xl',
     'transition-all duration-200',
     'disabled:opacity-50 disabled:cursor-not-allowed',
     'cursor-pointer',

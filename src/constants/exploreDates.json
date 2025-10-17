@@ -24,7 +24,7 @@
       }
     ],
     "budget": {
-      "label": "Please share your estimated budget for the event.",
+      "label": "Please share your estimated \n budget for the event.",
       "options": [
         {
           "value": "5-10",

@@ -87,7 +87,7 @@ export default function HowItWorks() {
   };
 
   return (
-    <section ref={containerRef} className="bg-white scroll-smooth">
+    <section ref={containerRef} className="bg-white scroll-smooth py-12">
         {/* Title Section */}
         <motion.div 
           className="flex items-center justify-center mb-10 px-6"
@@ -105,8 +105,8 @@ export default function HowItWorks() {
               className="absolute -translate-y-1/2"
             />
           </div>
-          <h1 className="text-[32px] leading-tight text-center mx-6 text-gray-900" style={{ 
-            fontFamily: 'Dream Avenue, Playfair Display, Georgia', 
+          <h1 className="text-2xl md:text-3xl lg:text-6xl leading-tight text-center mx-6 text-gray-900" style={{ 
+            fontFamily: 'var(--font-dream-avenue)', 
             fontWeight: '400',
             letterSpacing: '0.02em',
             fontStyle: 'normal'
@@ -163,8 +163,8 @@ export default function HowItWorks() {
                             placeholder="Name"
                             value={formData.name}
                             onChange={(e) => handleInputChange('name', e.target.value)}
-                            className="w-full bg-transparent border-b border-gray-300 py-2 text-[#3C2415] placeholder-gray-500 text-sm focus:border-gray-500 focus:outline-none transition-colors"
-                            style={{ fontFamily: 'Montserrat, sans-serif' }}
+                            className="w-full bg-transparent border-b border-gray-300 py-2 text-[#3C2415] placeholder-gray-500 text-sm focus:border-gray-500 focus:outline-none transition-colors text-center"
+                            style={{ fontFamily: 'var(--font-spartan)' }}
                           />
                         </div>
 
@@ -175,16 +175,16 @@ export default function HowItWorks() {
                             placeholder="Phone number"
                             value={formData.phone}
                             onChange={(e) => handleInputChange('phone', e.target.value)}
-                            className="w-full bg-transparent border-b border-gray-300 py-2 text-[#3C2415] placeholder-gray-500 text-sm focus:border-gray-500 focus:outline-none transition-colors"
-                            style={{ fontFamily: 'Montserrat, sans-serif' }}
+                            className="w-full bg-transparent border-b border-gray-300 py-2 text-[#3C2415] placeholder-gray-500 text-sm focus:border-gray-500 focus:outline-none transition-colors text-center"
+                            style={{ fontFamily: 'var(--font-spartan)' }}
                           />
                         </div>
 
                         {/* Submit Button */}
                         <button
                           type="submit"
-                          className="w-full bg-[#7C2D12] text-white py-3 rounded-lg font-semibold uppercase tracking-wide hover:bg-[#5C2A0F] transition-colors mt-6 text-sm"
-                          style={{ fontFamily: 'Montserrat, sans-serif' }}
+                          className="w-full bg-[#840032] text-white py-3 rounded-lg font-semibold uppercase tracking-wide hover:bg-[#820032] transition-colors mt-6 text-sm pointer-cursor"
+                          style={{ fontFamily: 'var(--font-cinzel)' }}
                         >
                           Submit
                         </button>
@@ -244,10 +244,10 @@ export default function HowItWorks() {
                             <div className="flex-1">
                               <motion.h3 
                                 className="text-black font-normal mb-2" 
-                                style={{ fontFamily: 'Spartan' }}
+                                style={{ fontFamily: 'var(--font-spartan)' }}
                                 animate={{
                                   fontSize: getFontSize(isActive, currentBreakpoint),
-                                  fontWeight: isActive ? '500' : '400'
+                                  fontWeight: isActive ? '400' : '300'
                                 }}
                                 transition={{ duration: 0.5, ease: "easeInOut" }}
                               >
@@ -267,7 +267,7 @@ export default function HowItWorks() {
                                 >
                                   <p 
                                     className="text-gray-800 font-light text-sm md:text-base lg:text-xl whitespace-pre-line" 
-                                    style={{ fontFamily: 'Montserrat' }}
+                                    style={{ fontFamily: 'var(--font-montserrat)' }}
                                   >
                                     {step.description}
                                   </p>

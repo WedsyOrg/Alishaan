@@ -13,6 +13,7 @@
   --font-montserrat: var(--font-montserrat);
   --font-poiret-one: var(--font-poiret-one);
   --font-cinzel: var(--font-cinzel);
+  --font-dream-avenue: var(--font-dream-avenue);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -50,11 +51,11 @@ html {
 }
 
 .font-dancing {
-  font-family: 'Dancing Script', cursive;
+  font-family: var(--font-dancing-script), 'Dancing Script', cursive;
 }
 
 .font-dream-avenue {
-  font-family: 'Dream Avenue', serif;
+  font-family: var(--font-dream-avenue), 'Dream Avenue', serif;
 }
 
 .font-cinzel {
@@ -62,7 +63,7 @@ html {
 }
 
 .font-spartan {
-  font-family: 'Spartan', sans-serif;
+  font-family: var(--font-spartan), 'League Spartan', 'Spartan', sans-serif;
 }
 
 /* Continuous carousel animation with consistent gaps */
