@@ -24,8 +24,8 @@ export default function Homepage() {
           className="object-cover hidden md:block"
           priority
         />
-        {/* Gradient overlay for better text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/30" />
+        {/* Black to transparent gradient overlay (top to bottom) */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/30 to-transparent" />
       </div>
     
     
