@@ -8,6 +8,7 @@ import GalleryView from './components/GalleryView';
 import PaginationDots from './components/PaginationDots';
 import Button from '../../ui/Button';
 import { storiesData } from './stories-data';
+import { motion } from 'framer-motion';
 
 interface StoriesSectionProps extends ComponentProps<'section'> {
   isVisible?: boolean;
@@ -40,26 +41,44 @@ export default function StoriesSection({
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-4 mb-6">
             {/* Left decorative line with key symbol */}
-            <div className="flex items-center gap-2">
+            <motion.div 
+              className="flex items-center gap-2"
+              initial={{ opacity: 0, y: 6 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.6 }}
+              transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+            >
               <div className="w-12 h-px bg-black"></div>
               <div className="w-4 h-4 bg-black rounded-sm flex items-center justify-center">
                 <div className="w-2 h-2 bg-white rounded-sm"></div>
               </div>
-            </div>
+            </motion.div>
             
             {/* Main heading */}
-            <h2 className="text-3xl font-normal text-black font-dream-avenue">
+            <motion.h2 
+              className="text-2xl lg:text-5xl font-light text-black font-dream-avenue"
+              initial={{ opacity: 0, y: 6 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.6 }}
+              transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1] }}
+            >
               Stories We&apos;ve Created Together
-            </h2>
+            </motion.h2>
             
             {/* Right decorative line with flourish */}
-            <div className="flex items-center gap-2">
+            <motion.div 
+              className="flex items-center gap-2"
+              initial={{ opacity: 0, y: 6 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.6 }}
+              transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
+            >
               <div className="w-4 h-4 bg-black rounded-sm relative">
                 <div className="absolute inset-1 bg-white rounded-sm"></div>
                 <div className="absolute top-0 right-0 w-1 h-1 bg-black rounded-full"></div>
               </div>
               <div className="w-12 h-px bg-black"></div>
-            </div>
+            </motion.div>
           </div>
         </div>
 
@@ -99,7 +118,13 @@ export default function StoriesSection({
         </div>
 
         {/* CTA Button */}
-        <div className="flex justify-center">
+        <motion.div 
+          className="flex justify-center font-cinzel"
+          initial={{ opacity: 0, y: 6 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.4 }}
+          transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
+        >
           <Button 
             text="LET'S CREATE YOUR STORY"
             bg="bg-[#840032]"
@@ -107,7 +132,7 @@ export default function StoriesSection({
             hover="hover:bg-[#6b0029]"
             className="shadow-lg"
           />
-        </div>
+        </motion.div>
       </div>
     </section>
   );

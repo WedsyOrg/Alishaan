@@ -1,5 +1,7 @@
+'use client';
 import Button from '@/components/ui/Button';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 export default function Homepage() {
   return (
@@ -28,30 +30,60 @@ export default function Homepage() {
     
     
       {/* Content Container */}
-      <div className="relative z-10 w-full px-4 py-16 text-left md:text-center">
+      <div className="relative z-10 w-full px-4 py-5 text-left md:text-left">
         {/* Brand Section */}
-        <div className='md:flex justify-between max-w-6xl mx-auto'>
+        <div className='md:flex justify-between items-start gap-6 max-w-6xl mx-auto'>
 
       
-        <div className="flex flex-col mb-2">
-          <h1 className="text-4xl md:text-4xl lg:text-4xl font-light text-white mb-2 font-montserrat">
+        <motion.div 
+          className="flex flex-col mb-2"
+          initial={{ opacity: 0, y: 6 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.6 }}
+          transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <motion.h1 
+            className="text-4xl md:text-4xl lg:text-4xl font-light text-white mb-2 font-montserrat"
+            initial={{ opacity: 0, y: 4 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.6 }}
+            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+          >
             ALISHAAN
-          </h1>
-          <h2 className="text-lg md:text-xl lg:text-xl font-extralight text-white font-montserrat">
+          </motion.h1>
+          <motion.h2 
+            className="text-lg md:text-xl lg:text-xl font-extralight text-white font-montserrat"
+            initial={{ opacity: 0, y: 4 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.6 }}
+            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+          >
             LUXURY WEDDINGS
-          </h2>
-        </div>
+          </motion.h2>
+        </motion.div>
 
         {/* Line Breaker - Mobile */}
-        <div className="w-[60%] md:hidden h-0.5 bg-white mb-8 md:hidden" />
+        <div className="w-[60%] md:hidden h-0.5 bg-white mb-8" />
        
 
         {/* Tagline */}
-        <div className="mb-8">
-          <p className="text-5xl md:text-6xl lg:text-6xl lg:max-w-[60%] text-white leading-tight font-dream-avenue ">
+        <motion.div 
+          className="mb-8 md:ml-auto md:max-w-[45%] md:text-right"
+          initial={{ opacity: 0, y: 6 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.6 }}
+          transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+        >
+          <motion.p 
+            className="text-5xl md:text-6xl lg:text-6xl text-white leading-tight font-dream-avenue md:text-right"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: false, amount: 0.7 }}
+            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
+          >
             Celebrations that speak without words
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         </div>
 
@@ -63,48 +95,78 @@ export default function Homepage() {
         </div>
         <div className="mt-90">
         {/* CTA Button */}
-        <div className="mb-6 flex items-center justify-center md:justify-center">
+        <motion.div 
+          className="mb-6 flex items-center justify-center md:justify-center"
+          initial={{ opacity: 0, y: 6 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.5 }}
+          transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.6 }}
+        >
           <Button
             text="GET FREE CONSULTATION"
             bg="bg-white/90"
             textColor="text-gray-800"
             hover="hover:bg-white hover:scale-105"
-            className="shadow-lg backdrop-blur-sm"
+            className="shadow-lg backdrop-blur-sm  md:w-[25%] font-cinzel"
           />
-        </div>
+        </motion.div>
 
         {/* Line Breaker */}
-        <div className="w-full md:w-[90%] h-0.5 bg-white mb-8 md:mx-auto"  />
+        <motion.div 
+          className="w-full md:w-[90%] h-0.5 bg-white mb-8 md:mx-auto"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: false, amount: 0.4 }}
+          transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.9 }}
+        />
 
         {/* Statistics Section */}
-        <div className="flex flex-row justify-between items-center mb-0 text-white md:justify-between md:max-w-[70%] md:mx-auto md:gap-8">
-          <div className="flex flex-col items-center">
+        <motion.div 
+          className="flex flex-row justify-between items-center mb-0 text-white md:justify-between md:max-w-[70%] md:mx-auto md:gap-8"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.5 }}
+          transition={{ staggerChildren: 0.15, delayChildren: 1.2 }}
+        >
+          <motion.div 
+            className="flex flex-col items-center"
+            variants={{ hidden: { opacity: 0, y: 6 }, visible: { opacity: 1, y: 0 } }}
+            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+          >
             <div className="text-2xl md:text-3xl font-bold mb-1 font-poiret-one">
               12 years +
             </div>
             <div className="text-md md:text-sm opacity-90 font-montserrat">
               Experience
             </div>
-          </div>
+          </motion.div>
           
-          <div className="flex flex-col items-center">
+          <motion.div 
+            className="flex flex-col items-center"
+            variants={{ hidden: { opacity: 0, y: 6 }, visible: { opacity: 1, y: 0 } }}
+            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+          >
             <div className="text-2xl md:text-3xl font-bold mb-1 font-poiret-one">
               4.9/5
             </div>
             <div className="text-md md:text-sm opacity-90 font-montserrat">
               Google
             </div>
-          </div>
+          </motion.div>
           
-          <div className="flex flex-col items-center">
+          <motion.div 
+            className="flex flex-col items-center"
+            variants={{ hidden: { opacity: 0, y: 6 }, visible: { opacity: 1, y: 0 } }}
+            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+          >
             <div className="text-2xl md:text-3xl font-bold mb-1 font-poiret-one">
               1250+
             </div>
             <div className="text-md md:text-sm opacity-90 font-montserrat">
               Weddings
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
         </div>
     </div>
     </section>

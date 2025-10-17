@@ -8,9 +8,9 @@ export interface StoryImage {
 export const storiesData: StoryImage[] = [
   {
     id: 1,
-    mainImage: '/assets/stories/1.jpg',
+    mainImage: '/assets/stories/1.png',
     testimonial: "We've had such a wonderful experience, no stress, no hassle, all thanks to all the team efforts they have put together",
-    thumbnail: '/assets/stories/1.jpg'
+    thumbnail: '/assets/stories/1.png'
   },
   {
     id: 2,

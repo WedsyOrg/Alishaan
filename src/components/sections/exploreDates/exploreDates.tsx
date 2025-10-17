@@ -65,14 +65,14 @@ export default function ExploreDatesSection({
         </div>
 
         {/* Bottom Section - Button with consistent spacing */}
-        <div className="flex justify-center w-full px-4 md:px-6 md:px-8 lg:px-8">
+        <div className="flex justify-center w-full px-4 md:px-8 lg:px-8">
           <Button 
             text="EXPLORE DATES"
             bg="bg-white/60"
             textColor="text-gray-800"
             hover="hover:bg-white/90"
             showArrow={true}
-            className="shadow-lg px-20"
+            className="shadow-lg px-20 font-cinzel"
           />
         </div>
       </div>

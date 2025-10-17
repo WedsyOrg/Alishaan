@@ -1,0 +1,332 @@
+# Alishaan Project Cursor Rules
+
+## Project Overview
+This is a Next.js 15 project with Tailwind CSS v4, TypeScript, and performance-first architecture. The project prioritizes SSG optimization, mobile-first responsive design, and maintainable code structure.
+
+## Architecture Principles
+
+### Performance First
+- ✅ Use SSG (Static Site Generation) for static pages
+- ✅ Use SSR only when dynamic content is required
+- ✅ Optimize for Core Web Vitals (LCP, FID, CLS)
+- ✅ Minimize JavaScript bundle size
+- ✅ Implement proper code splitting
+- ✅ Use Next.js Image component for all images
+
+### Mobile-First Design
+- ✅ Design for mobile first, then scale up
+- ✅ Test on all breakpoints: mobile (320px+), tablet (768px+), desktop (1024px+)
+- ✅ Use Tailwind's responsive prefixes (sm:, md:, lg:, xl:)
+- ✅ Ensure touch-friendly interface elements (44px minimum touch targets)
+
+### Code Organization
+- ✅ Single responsibility principle for components
+- ✅ Composition over inheritance
+- ✅ Clear separation of concerns
+- ✅ Consistent file and folder naming conventions
+
+## File Structure Standards
+
+### Components Organization
+```
+src/components/
+├── sections/           # Page sections
+│   └── SectionName/
+│       ├── SectionName.tsx
+│       ├── section-data.ts
+│       └── components/  # Sub-components
+├── ui/                # Reusable UI components
+└── layout/            # Layout components
+```
+
+### Naming Conventions
+- **Files**: PascalCase for components (e.g., `HeroSection.tsx`)
+- **Folders**: camelCase (e.g., `heroSection/`)
+- **Variables**: camelCase (e.g., `isVisible`)
+- **Constants**: UPPER_SNAKE_CASE (e.g., `MAX_WIDTH`)
+- **Types/Interfaces**: PascalCase (e.g., `UserProps`)
+
+## Component Development Rules
+
+### When Adding New Sections
+1. **Create section folder** in `components/sections/`
+2. **Follow naming convention** - `SectionName.tsx`
+3. **Create data file** if needed - `section-data.ts`
+4. **Break into sub-components** for maintainability
+5. **Add to page.tsx** in correct order
+6. **Test responsiveness** on all breakpoints
+7. **Verify SSG optimization** - no client-side code
+
+### Component Structure Template
+```typescript
+import { ComponentProps } from 'react';
+
+interface SectionNameProps extends ComponentProps<'section'> {
+  // Define props here
+  title: string;
+  subtitle?: string;
+  isVisible?: boolean;
+}
+
+export default function SectionName({ 
+  title, 
+  subtitle, 
+  isVisible = true,
+  className = '',
+  ...props 
+}: SectionNameProps) {
+  if (!isVisible) return null;
+
+  return (
+    <section 
+      className={`py-16 px-4 md:px-6 lg:px-8 ${className}`}
+      {...props}
+    >
+      {/* Component content */}
+    </section>
+  );
+}
+```
+
+### When Modifying Existing Components
+1. **Maintain backward compatibility** - don't break existing usage
+2. **Update TypeScript interfaces** if props change
+3. **Test all breakpoints** - mobile, tablet, desktop
+4. **Verify performance** - no regression in bundle size
+5. **Update documentation** if needed
+
+## TypeScript Standards
+
+### Always Use Interfaces
+```typescript
+// ✅ Good
+interface ButtonProps {
+  variant: 'primary' | 'secondary';
+  size: 'sm' | 'md' | 'lg';
+  children: React.ReactNode;
+  onClick?: () => void;
+}
+
+// ❌ Avoid
+const Button = (props: any) => { ... }
+```
+
+### Extend HTML Attributes
+```typescript
+interface CustomButtonProps extends ComponentProps<'button'> {
+  variant: 'primary' | 'secondary';
+  isLoading?: boolean;
+}
+```
+
+### Proper React Component Typing
+```typescript
+import { FC } from 'react';
+
+const Component: FC<Props> = ({ prop1, prop2 }) => {
+  // Component logic
+};
+```
+
+## Styling Guidelines
+
+### Tailwind CSS Best Practices
+- ✅ Use Tailwind utility classes over custom CSS
+- ✅ Follow mobile-first responsive design
+- ✅ Use consistent spacing scale (4, 8, 12, 16, 24, 32, 48, 64)
+- ✅ Maintain consistent color palette
+- ✅ Use semantic class names for complex styles
+
+### Responsive Design Patterns
+```typescript
+// Mobile-first responsive classes
+<div className="
+  text-sm md:text-base lg:text-lg
+  p-4 md:p-6 lg:p-8
+  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3
+  gap-4 md:gap-6 lg:gap-8
+">
+```
+
+### Performance Optimizations
+- ✅ Use `next/image` for all images
+- ✅ Implement proper image optimization
+- ✅ Use `React.memo()` for expensive components
+- ✅ Implement proper loading states
+- ✅ Use dynamic imports for code splitting
+
+## Performance Checklist
+
+### Before Committing
+- [ ] **SSG optimized** - no unnecessary client-side code
+- [ ] **Responsive design** - tested on mobile and desktop
+- [ ] **Performance** - images optimized, components memoized
+- [ ] **TypeScript** - proper types, no any types
+- [ ] **Accessibility** - semantic HTML, proper alt text
+- [ ] **Code quality** - clean, readable, maintainable
+- [ ] **Consistent styling** - follows design system
+- [ ] **No console errors** - clean browser console
+
+## What to Avoid
+
+### Performance Anti-patterns
+- ❌ Dynamic imports for static content
+- ❌ Unnecessary 'use client' directives
+- ❌ Large bundle sizes - optimize imports
+- ❌ Unoptimized images - always use Next.js Image
+- ❌ Inline styles - use Tailwind classes
+- ❌ Unnecessary re-renders - use React.memo()
+
+### Code Anti-patterns
+- ❌ Hardcoded content - use data files
+- ❌ Complex nested components - break into smaller pieces
+- ❌ Missing TypeScript types - always type props
+- ❌ Console.log statements in production code
+- ❌ Unused imports or variables
+
+### Layout Anti-patterns
+- ❌ Fixed heights that break responsiveness
+- ❌ Inconsistent spacing - use design system
+- ❌ Poor mobile experience - always test mobile first
+- ❌ Accessibility issues - use semantic HTML
+- ❌ Non-semantic HTML elements
+
+## Code Quality Standards
+
+### Component Design
+- **Single responsibility** - one component, one purpose
+- **Composition over inheritance** - build complex UIs from simple components
+- **Props interface** - always define clear prop interfaces
+- **Default props** - use default parameters for optional props
+
+### Code Quality
+- **Clean, readable code** - prioritize maintainability
+- **Consistent naming** - use descriptive, consistent names
+- **Comment complex logic** - explain non-obvious code
+- **Remove unused imports** - keep code clean
+- **Follow DRY principle** - don't repeat yourself
+
+## Data Management
+
+### Data Files Structure
+```typescript
+// section-data.ts
+export const heroSectionData = {
+  title: "Welcome to Alishaan",
+  subtitle: "Your perfect wedding planning partner",
+  cta: {
+    text: "Get Started",
+    href: "/contact"
+  }
+} as const;
+
+export type HeroSectionData = typeof heroSectionData;
+```
+
+### API Integration
+- ✅ Use TypeScript for API responses
+- ✅ Implement proper error handling
+- ✅ Use loading states for async operations
+- ✅ Cache data appropriately for SSG
+
+## Testing Standards
+
+### Component Testing
+- ✅ Test component rendering
+- ✅ Test responsive behavior
+- ✅ Test accessibility features
+- ✅ Test performance metrics
+
+### Manual Testing Checklist
+- [ ] Mobile view (320px - 767px)
+- [ ] Tablet view (768px - 1023px)
+- [ ] Desktop view (1024px+)
+- [ ] Touch interactions
+- [ ] Keyboard navigation
+- [ ] Screen reader compatibility
+
+## Accessibility Standards
+
+### HTML Semantics
+- ✅ Use semantic HTML elements
+- ✅ Proper heading hierarchy (h1, h2, h3...)
+- ✅ Alt text for all images
+- ✅ ARIA labels when needed
+- ✅ Focus management for interactive elements
+
+### Color and Contrast
+- ✅ Minimum 4.5:1 contrast ratio for normal text
+- ✅ Minimum 3:1 contrast ratio for large text
+- ✅ Don't rely solely on color to convey information
+
+## Git and Version Control
+
+### Commit Messages
+```
+feat: add hero section component
+fix: resolve mobile responsive issue
+style: update button component styling
+refactor: optimize image loading performance
+docs: update component documentation
+```
+
+### Branch Naming
+- `feature/section-name`
+- `fix/issue-description`
+- `refactor/component-name`
+- `docs/update-readme`
+
+## Development Workflow
+
+### Before Starting Work
+1. Pull latest changes from main branch
+2. Create feature branch with descriptive name
+3. Set up development environment
+4. Run `npm run dev` to start development server
+
+### During Development
+1. Follow component structure standards
+2. Test on multiple breakpoints
+3. Ensure TypeScript compliance
+4. Optimize for performance
+5. Maintain accessibility standards
+
+### Before Committing
+1. Run linting: `npm run lint`
+2. Test responsive design
+3. Check performance metrics
+4. Verify accessibility
+5. Update documentation if needed
+
+## Environment Setup
+
+### Required Tools
+- Node.js 18+
+- npm or yarn
+- VS Code with recommended extensions
+- Browser dev tools for testing
+
+### Recommended VS Code Extensions
+- Tailwind CSS IntelliSense
+- TypeScript Importer
+- ES7+ React/Redux/React-Native snippets
+- Auto Rename Tag
+- Bracket Pair Colorizer
+
+## Performance Monitoring
+
+### Key Metrics to Track
+- First Contentful Paint (FCP)
+- Largest Contentful Paint (LCP)
+- First Input Delay (FID)
+- Cumulative Layout Shift (CLS)
+- Time to Interactive (TTI)
+
+### Optimization Strategies
+- Image optimization with Next.js Image
+- Code splitting with dynamic imports
+- Lazy loading for below-the-fold content
+- Memoization for expensive computations
+- Proper caching strategies
+
+Remember: This project prioritizes performance, maintainability, and user experience. Always think mobile-first, optimize for SSG, and maintain consistent design patterns.
