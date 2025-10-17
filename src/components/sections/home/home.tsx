@@ -32,7 +32,7 @@ export default function Homepage() {
       {/* Content Container */}
       <div className="relative z-10 w-full px-4 py-5 text-left md:text-left">
         {/* Brand Section */}
-        <div className='md:flex justify-between items-start gap-6 max-w-6xl mx-auto'>
+        <div className='md:flex justify-between items-start gap-6 max-w-7xl mx-auto'>
 
       
         <motion.div 
@@ -43,7 +43,8 @@ export default function Homepage() {
           transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
         >
           <motion.h1 
-            className="text-4xl md:text-4xl lg:text-4xl font-light text-white mb-2 font-montserrat"
+            className="text-4xl md:text-4xl lg:text-4xl font-light text-white mb-2"
+            style={{ fontFamily: 'var(--font-montserrat)' }}
             initial={{ opacity: 0, y: 4 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.6 }}
@@ -52,7 +53,8 @@ export default function Homepage() {
             ALISHAAN
           </motion.h1>
           <motion.h2 
-            className="text-lg md:text-xl lg:text-xl font-extralight text-white font-montserrat"
+            className="text-lg md:text-xl lg:text-xl font-extralight text-white"
+            style={{ fontFamily: 'var(--font-montserrat)' }}
             initial={{ opacity: 0, y: 4 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.6 }}
@@ -75,7 +77,8 @@ export default function Homepage() {
           transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
         >
           <motion.p 
-            className="text-5xl md:text-6xl lg:text-6xl text-white leading-tight font-dream-avenue md:text-right"
+            className="text-5xl md:text-6xl lg:text-6xl text-white leading-tight md:text-right"
+            style={{ fontFamily: 'var(--font-dream-avenue)' }}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: false, amount: 0.7 }}
@@ -107,7 +110,8 @@ export default function Homepage() {
             bg="bg-white/90"
             textColor="text-gray-800"
             hover="hover:bg-white hover:scale-105"
-            className="shadow-lg backdrop-blur-sm  md:w-[25%] font-cinzel"
+            className="shadow-lg backdrop-blur-sm  md:w-[25%]"
+            style={{ fontFamily: 'var(--font-cinzel)',fontWeight: '300' }}
           />
         </motion.div>
 

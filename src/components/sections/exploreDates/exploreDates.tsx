@@ -47,7 +47,7 @@ export default function ExploreDatesSection({
             
             {/* Main heading with container */}
             <div className="flex-shrink-0 mx-4 lg:mx-8 max-w-[16rem] md:max-w-none">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-normal text-white font-dream-avenue leading-none text-center">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-normal text-white leading-none text-center" style={{ fontFamily: 'var(--font-dream-avenue)' }}>
                 Your perfect venue awaits
               </h2>
             </div>
@@ -72,7 +72,8 @@ export default function ExploreDatesSection({
             textColor="text-gray-800"
             hover="hover:bg-white/90"
             showArrow={true}
-            className="shadow-lg px-20 font-cinzel"
+            className="shadow-lg px-20"
+            style={{ fontFamily: 'var(--font-cinzel)',fontWeight: '300' }}
           />
         </div>
       </div>

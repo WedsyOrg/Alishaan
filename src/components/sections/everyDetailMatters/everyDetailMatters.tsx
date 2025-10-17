@@ -7,7 +7,7 @@ import Button from '@/components/ui/Button';
 
 export default function EveryDetailMatters() {
   return (
-    <section className="bg-white py-12 md:py-16 lg:py-20">
+    <section className="bg-white py-12 md:py-16 lg:py-20" style={{ boxShadow: '0 -8px 16px -4px rgba(0, 0, 0, 0.15)' }}>
       {/* Container */}
       {/* Title with horizontal line */}
       <motion.div 

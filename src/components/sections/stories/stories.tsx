@@ -119,7 +119,8 @@ export default function StoriesSection({
 
         {/* CTA Button */}
         <motion.div 
-          className="flex justify-center font-cinzel"
+          className="flex justify-center"
+          style={{ fontFamily: 'var(--font-cinzel)',fontWeight: '300' }}
           initial={{ opacity: 0, y: 6 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.4 }}
@@ -131,6 +132,7 @@ export default function StoriesSection({
             textColor="text-white"
             hover="hover:bg-[#6b0029]"
             className="shadow-lg"
+            style={{ fontFamily: 'var(--font-cinzel)',fontWeight: '300' }}
           />
         </motion.div>
       </div>

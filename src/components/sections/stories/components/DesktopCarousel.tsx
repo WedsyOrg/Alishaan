@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import { StoryImage } from '../stories-data';
-import { AnimatePresence, motion } from 'framer-motion';
 
 interface DesktopCarouselProps {
   stories: StoryImage[];
@@ -62,132 +61,91 @@ export default function DesktopCarousel({
     <div className="hidden lg:flex items-center justify-center gap-6 ">
       {/* Fixed skeleton positions - only image content changes */}
       <div className="relative w-52 h-60 rounded-xl overflow-hidden opacity-70">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={stories[getImageForPosition(0, currentIndex)].id}
-            className="absolute inset-0 rounded-inherit overflow-hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-            style={{ willChange: 'opacity' }}
-          >
-            <Image
-              src={stories[getImageForPosition(0, currentIndex)].mainImage}
-              alt={`Wedding story ${stories[getImageForPosition(0, currentIndex)].id}`}
-              fill
-              className="object-cover"
-              sizes="(min-width: 1024px) 25vw, 0vw"
-            />
-          </motion.div>
-        </AnimatePresence>
+        <div
+          key={stories[getImageForPosition(0, currentIndex)].id}
+          className="absolute inset-0 rounded-inherit overflow-hidden"
+        >
+          <Image
+            src={stories[getImageForPosition(0, currentIndex)].mainImage}
+            alt={`Wedding story ${stories[getImageForPosition(0, currentIndex)].id}`}
+            fill
+            className="object-cover"
+            sizes="(min-width: 1024px) 25vw, 0vw"
+          />
+        </div>
       </div>
 
       <div className="relative w-68 h-86 rounded-xl overflow-hidden opacity-70">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={stories[getImageForPosition(1, currentIndex)].id}
-            className="absolute inset-0 rounded-inherit overflow-hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-            style={{ willChange: 'opacity' }}
-          >
-            <Image
-              src={stories[getImageForPosition(1, currentIndex)].mainImage}
-              alt={`Wedding story ${stories[getImageForPosition(1, currentIndex)].id}`}
-              fill
-              className="object-cover"
-              sizes="(min-width: 1024px) 25vw, 0vw"
-            />
-          </motion.div>
-        </AnimatePresence>
+        <div
+          key={stories[getImageForPosition(1, currentIndex)].id}
+          className="absolute inset-0 rounded-inherit overflow-hidden"
+        >
+          <Image
+            src={stories[getImageForPosition(1, currentIndex)].mainImage}
+            alt={`Wedding story ${stories[getImageForPosition(1, currentIndex)].id}`}
+            fill
+            className="object-cover"
+            sizes="(min-width: 1024px) 25vw, 0vw"
+          />
+        </div>
       </div>
 
       <div className="relative w-84 h-120 rounded-xl overflow-hidden opacity-100">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={stories[getImageForPosition(2, currentIndex)].id}
-            className="absolute inset-0 rounded-inherit overflow-hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-            style={{ willChange: 'opacity' }}
-          >
-            <Image
-              src={stories[getImageForPosition(2, currentIndex)].mainImage}
-              alt={`Wedding story ${stories[getImageForPosition(2, currentIndex)].id}`}
-              fill
-              className="object-cover"
-              sizes="(min-width: 1024px) 25vw, 0vw"
-            />
+        <div
+          key={stories[getImageForPosition(2, currentIndex)].id}
+          className="absolute inset-0 rounded-inherit overflow-hidden"
+        >
+          <Image
+            src={stories[getImageForPosition(2, currentIndex)].mainImage}
+            alt={`Wedding story ${stories[getImageForPosition(2, currentIndex)].id}`}
+            fill
+            className="object-cover"
+            sizes="(min-width: 1024px) 25vw, 0vw"
+          />
         {/* Testimonial Overlay - Always on center position */}
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent p-4">
-              <motion.div
-                className="flex items-start gap-3"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <div className="flex-shrink-0 mt-1">
-                  <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                    <span className="text-black font-bold text-lg leading-none">&quot;</span>
-                  </div>
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent p-4">
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 mt-1">
+                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                  <span className="text-black font-bold text-lg leading-none">&quot;</span>
                 </div>
-                <p className="text-white text-sm leading-relaxed flex-1">
-                  {stories[getImageForPosition(2, currentIndex)].testimonial}
-                </p>
-              </motion.div>
+              </div>
+              <p className="text-white text-sm leading-relaxed flex-1">
+                {stories[getImageForPosition(2, currentIndex)].testimonial}
+              </p>
             </div>
-          </motion.div>
-        </AnimatePresence>
+          </div>
+        </div>
       </div>
 
       <div className="relative  w-68 h-86 rounded-xl overflow-hidden opacity-70">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={stories[getImageForPosition(3, currentIndex)].id}
-            className="absolute inset-0 rounded-inherit overflow-hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-            style={{ willChange: 'opacity' }}
-          >
-            <Image
-              src={stories[getImageForPosition(3, currentIndex)].mainImage}
-              alt={`Wedding story ${stories[getImageForPosition(3, currentIndex)].id}`}
-              fill
-              className="object-cover"
-              sizes="(min-width: 1024px) 25vw, 0vw"
-            />
-          </motion.div>
-        </AnimatePresence>
+        <div
+          key={stories[getImageForPosition(3, currentIndex)].id}
+          className="absolute inset-0 rounded-inherit overflow-hidden"
+        >
+          <Image
+            src={stories[getImageForPosition(3, currentIndex)].mainImage}
+            alt={`Wedding story ${stories[getImageForPosition(3, currentIndex)].id}`}
+            fill
+            className="object-cover"
+            sizes="(min-width: 1024px) 25vw, 0vw"
+          />
+        </div>
       </div>
 
       <div className="relative w-52 h-60 rounded-xl overflow-hidden opacity-70">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={stories[getImageForPosition(4, currentIndex)].id}
-            className="absolute inset-0 rounded-inherit overflow-hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-            style={{ willChange: 'opacity' }}
-          >
-            <Image
-              src={stories[getImageForPosition(4, currentIndex)].mainImage}
-              alt={`Wedding story ${stories[getImageForPosition(4, currentIndex)].id}`}
-              fill
-              className="object-cover"
-              sizes="(min-width: 1024px) 25vw, 0vw"
-            />
-          </motion.div>
-        </AnimatePresence>
+        <div
+          key={stories[getImageForPosition(4, currentIndex)].id}
+          className="absolute inset-0 rounded-inherit overflow-hidden"
+        >
+          <Image
+            src={stories[getImageForPosition(4, currentIndex)].mainImage}
+            alt={`Wedding story ${stories[getImageForPosition(4, currentIndex)].id}`}
+            fill
+            className="object-cover"
+            sizes="(min-width: 1024px) 25vw, 0vw"
+          />
+        </div>
       </div>
     </div>
   );
