@@ -67,6 +67,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
+        <meta httpEquiv="Permissions-Policy" content="payment=*, camera=*, microphone=*" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} ${poiretOne.variable} ${cinzel.variable} ${dreamAvenue.variable} ${dancingScript.variable} ${spartan.variable} ${cinzelDecorative.variable} antialiased`}
       >

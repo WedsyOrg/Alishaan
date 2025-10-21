@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useRef, useState, useEffect, useCallback } from 'react';
+import axios from 'axios';
 import HOW_IT_WORKS_CONSTANTS from '@/constants/howItWorks.json';
 
 export default function HowItWorks() {
@@ -13,6 +14,7 @@ export default function HowItWorks() {
     name: '',
     phone: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Track current breakpoint
   useEffect(() => {
@@ -81,9 +83,37 @@ export default function HowItWorks() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    setIsSubmitting(true);
+
+    try {
+      const apiData = {
+        name: formData.name,
+        phonenumber: formData.phone,
+        email: 'not-provided@example.com', // Default email since not collected
+        budget: 500000, // Default budget
+        date: new Date().toISOString().split('T')[0] // Today's date
+      };
+
+      const response = await axios.post('http://localhost:8090/contact-form/', apiData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 200 || response.status === 201) {
+        console.log('Form submitted successfully:', response.data);
+        alert('Thank you! We will contact you soon.');
+        // Reset form
+        setFormData({ name: '', phone: '' });
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Error submitting form. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -183,10 +213,11 @@ export default function HowItWorks() {
                         {/* Submit Button */}
                         <button
                           type="submit"
-                          className="w-full bg-[#840032] text-white py-3 rounded-lg font-semibold uppercase tracking-wide hover:bg-[#820032] transition-colors mt-6 text-sm pointer-cursor"
+                          disabled={isSubmitting}
+                          className="w-full bg-[#840032] text-white py-3 rounded-lg font-semibold uppercase tracking-wide hover:bg-[#820032] transition-colors mt-6 text-sm pointer-cursor disabled:opacity-50 disabled:cursor-not-allowed"
                           style={{ fontFamily: 'var(--font-cinzel)' }}
                         >
-                          Submit
+                          {isSubmitting ? 'Submitting...' : 'Submit'}
                         </button>
                       </form>
                     </div>

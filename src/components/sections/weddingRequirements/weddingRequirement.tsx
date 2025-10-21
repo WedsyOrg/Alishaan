@@ -1,8 +1,9 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import axios from 'axios';
 import EXPLORE_DATES_CONSTANTS from '@/constants/exploreDates.json';
 import Button from '@/components/ui/Button';
 
@@ -11,17 +12,55 @@ export default function WeddingRequirement() {
   const [formData, setFormData] = useState({
     name: '',
     date: '',
-    phone: ''
+    phone: '',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', { ...formData, budget: selectedBudget });
+    setIsSubmitting(true);
+
+    try {
+      // Convert budget string to number (assuming it's in lakhs)
+      const budgetMap: { [key: string]: number } = {
+        '1-3': 200000,
+        '3-5': 400000,
+        '5-10': 750000,
+        '10+': 1000000
+      };
+
+      const apiData = {
+        name: formData.name,
+        phonenumber: formData.phone,
+        budget: budgetMap[selectedBudget],
+        date: formData.date
+      };
+
+      const response = await axios.post('http://localhost:8090/contact-form/', apiData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 200 || response.status === 201) {
+        console.log('Form submitted successfully:', response.data);
+        setIsSubmitted(true);
+        setFormData({ name: '', date: '', phone: '' });
+        setSelectedBudget('5-10');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Error submitting form. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
 
   return (
     <section className="relative min-h-screen bg-[#3C2415]">
@@ -139,138 +178,165 @@ export default function WeddingRequirement() {
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
             viewport={{ once: false }}
           >
-          {/* Form Header */}
-          <motion.div 
-            className="mb-4"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-            viewport={{ once: false }}
-          >
-            <p 
-              className="text-[#523329] text-2xl mb-2"
-              style={{ fontFamily: 'var(--font-spartan)', fontWeight: '350' }}
-            >
-              {EXPLORE_DATES_CONSTANTS.form.title}
-            </p>
-            <h3 
-              className="text-2xl font-bold text-[#3C2415]"
-              style={{ fontFamily: 'var(--font-spartan)', fontWeight: '400' }}
-            >
-              {EXPLORE_DATES_CONSTANTS.form.subtitle}
-            </h3>
-          </motion.div>
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Name Field */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
-              viewport={{ once: false }}
-            >
-              <input
-                type="text"
-                placeholder="Name"
-                value={formData.name}
-                onChange={(e) => handleInputChange('name', e.target.value)}
-                className="w-full bg-transparent border-b-2 border-[#523329] py-3 text-[#523329] placeholder-[#523329] focus:border-[#523329] focus:outline-none transition-all duration-300 hover:border-[#523329]"
-                style={{ fontFamily: 'var(--font-spartan)', fontWeight: '350' }}
-              />
-            </motion.div>
-
-            {/* Date Field */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
-              viewport={{ once: false }}
-            >
-              <input
-                type="text"
-                placeholder="When is your special day ?"
-                value={formData.date}
-                onChange={(e) => handleInputChange('date', e.target.value)}
-                className="w-full bg-transparent border-b-2 border-[#523329] py-3 text-[#523329] placeholder-[#523329] focus:border-[#523329] focus:outline-none transition-all duration-300 hover:border-[#6B3A1A]"
-                style={{ fontFamily: 'var(--font-spartan)', fontWeight: '350' }}
-              />
-            </motion.div>
-
-            {/* Budget Selection */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: 1.3 }}
-              viewport={{ once: false }}
-            >
-              <p 
-                className="text-[#000000] text-lg lg:text-xl mb-3"
-                style={{ fontFamily: 'var(--font-spartan)', fontWeight: '500' }}
-              >
-                {EXPLORE_DATES_CONSTANTS.form.budget.label}
-              </p>
-              <div className="grid grid-cols-3 gap-4">
-                {EXPLORE_DATES_CONSTANTS.form.budget.options.map((option, index) => (
-                  <motion.button
-                    key={option.value}
-                    type="button"
-                    onClick={() => setSelectedBudget(option.value)}
-                    className={`p-3 rounded-lg text-center transition-all duration-300 hover:scale-105 ${
-                      selectedBudget === option.value
-                        ? 'bg-[#523329] text-white shadow-lg'
-                        : 'bg-white text-[#523329] hover:bg-gray-50 hover:shadow-md'
-                    }`}
-                    style={{ fontFamily: 'var(--font-spartan)', fontWeight: '300' }}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ 
-                      duration: 0.4, 
-                      ease: "easeOut", 
-                    }}
-                    viewport={{ once: false }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+            {!isSubmitted ? (
+              <>
+                {/* Form Header */}
+                <motion.div 
+                  className="mb-4"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+                  viewport={{ once: false }}
+                >
+                  <p 
+                    className="text-[#523329] text-2xl mb-2"
+                    style={{ fontFamily: 'var(--font-spartan)', fontWeight: '350' }}
                   >
-                    {option.label}
-                  </motion.button>
-                ))}
+                    {EXPLORE_DATES_CONSTANTS.form.title}
+                  </p>
+                  <h3 
+                    className="text-2xl font-bold text-[#3C2415]"
+                    style={{ fontFamily: 'var(--font-spartan)', fontWeight: '400' }}
+                  >
+                    {EXPLORE_DATES_CONSTANTS.form.subtitle}
+                  </h3>
+                </motion.div>
+
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* Name Field */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
+                    viewport={{ once: false }}
+                  >
+                    <input
+                      type="text"
+                      placeholder="Name"
+                      value={formData.name}
+                      onChange={(e) => handleInputChange('name', e.target.value)}
+                      className="w-full bg-transparent border-b-2 border-[#523329] py-3 text-[#523329] placeholder-[#523329] focus:border-[#523329] focus:outline-none transition-all duration-300 hover:border-[#523329]"
+                      style={{ fontFamily: 'var(--font-spartan)', fontWeight: '350' }}
+                    />
+                  </motion.div>
+
+                  {/* Date Field */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
+                    viewport={{ once: false }}
+                  >
+                    <input
+                      type="text"
+                      placeholder="When is your special day ?"
+                      value={formData.date}
+                      onChange={(e) => handleInputChange('date', e.target.value)}
+                      className="w-full bg-transparent border-b-2 border-[#523329] py-3 text-[#523329] placeholder-[#523329] focus:border-[#523329] focus:outline-none transition-all duration-300 hover:border-[#6B3A1A]"
+                      style={{ fontFamily: 'var(--font-spartan)', fontWeight: '350' }}
+                    />
+                  </motion.div>
+
+                  {/* Budget Selection */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.5, ease: "easeOut", delay: 1.3 }}
+                    viewport={{ once: false }}
+                  >
+                    <p 
+                      className="text-[#000000] text-lg lg:text-xl mb-3"
+                      style={{ fontFamily: 'var(--font-spartan)', fontWeight: '500' }}
+                    >
+                      {EXPLORE_DATES_CONSTANTS.form.budget.label}
+                    </p>
+                    <div className="grid grid-cols-3 gap-4">
+                      {EXPLORE_DATES_CONSTANTS.form.budget.options.map((option, index) => (
+                        <motion.button
+                          key={option.value}
+                          type="button"
+                          onClick={() => setSelectedBudget(option.value)}
+                          className={`p-3 rounded-lg text-center transition-all duration-300 hover:scale-105 ${
+                            selectedBudget === option.value
+                              ? 'bg-[#523329] text-white shadow-lg'
+                              : 'bg-white text-[#523329] hover:bg-gray-50 hover:shadow-md'
+                          }`}
+                          style={{ fontFamily: 'var(--font-spartan)', fontWeight: '300' }}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          transition={{ 
+                            duration: 0.4, 
+                            ease: "easeOut", 
+                          }}
+                          viewport={{ once: false }}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          {option.label}
+                        </motion.button>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  {/* Phone Field */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
+                    viewport={{ once: false }}
+                  >
+                    <input
+                      type="tel"
+                      placeholder="Phone number"
+                      value={formData.phone}
+                      onChange={(e) => handleInputChange('phone', e.target.value)}
+                      className="w-full bg-transparent border-b-2 border-[#523329] py-3 text-[#523329] placeholder-[#523329] focus:border-[#523329] focus:outline-none transition-all duration-300 hover:border-[#523329]"
+                      style={{ fontFamily: 'var(--font-spartan)', fontWeight: '350' }}
+                    />
+                  </motion.div>
+
+                  {/* Submit Button */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+                    viewport={{ once: false }}
+                    className="mt-8 text-left"
+                  >
+                    <Button 
+                      text={isSubmitting ? "Submitting..." : EXPLORE_DATES_CONSTANTS.form.button.text}
+                      bg="bg-[#840032]"
+                      hover="hover:bg-[#70022c]"
+                      className="px-6 py-4 text-sm font-bold uppercase tracking-wide"
+                      style={{ fontFamily: 'var(--font-cinzel)', fontWeight: '300' }}
+                      disabled={isSubmitting}
+                    />
+                  </motion.div>
+                </form>
+              </>
+            ) : (
+              /* Success Message */
+              <div className="text-center">
+                <motion.h3 
+                  className="text-2xl font-bold text-[#523329] mb-4"
+                  style={{ fontFamily: 'var(--font-spartan)', fontWeight: '400' }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                >
+                  Thank you for sharing your details
+                </motion.h3>
+                <motion.p 
+                  className="text-lg text-[#523329]"
+                  style={{ fontFamily: 'var(--font-spartan)', fontWeight: '350' }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+                >
+                  A member of our team will reach out shortly to begin your experience.
+                </motion.p>
               </div>
-            </motion.div>
-
-            {/* Phone Field */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
-              viewport={{ once: false }}
-            >
-              <input
-                type="tel"
-                placeholder="Phone number"
-                value={formData.phone}
-                onChange={(e) => handleInputChange('phone', e.target.value)}
-                className="w-full bg-transparent border-b-2 border-[#523329] py-3 text-[#523329] placeholder-[#523329] focus:border-[#523329] focus:outline-none transition-all duration-300 hover:border-[#523329]"
-                style={{ fontFamily: 'var(--font-spartan)', fontWeight: '350' }}
-              />
-            </motion.div>
-
-            {/* Submit Button */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-              viewport={{ once: false }}
-              className="mt-8 text-left"
-            >
-              <Button 
-                text={EXPLORE_DATES_CONSTANTS.form.button.text}
-                bg="bg-[#840032]"
-                hover="hover:bg-[#70022c]"
-                className="px-6 py-4 text-sm font-bold uppercase tracking-wide"
-                style={{ fontFamily: 'var(--font-cinzel)', fontWeight: '300' }}
-              />
-            </motion.div>
-          </form>
+            )}
           </motion.div>
         </motion.div>
       </div>
@@ -395,116 +461,141 @@ export default function WeddingRequirement() {
                 </h3>
               </motion.div>
 
-              <form onSubmit={handleSubmit} className="space-y-8 px-4">
-                {/* Name Field */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.5, ease: "easeOut", delay: 1 }}
-                  viewport={{ once: false }}
-                >
-                  <input
-                    type="text"
-                    placeholder="Name"
-                    value={formData.name}
-                    onChange={(e) => handleInputChange('name', e.target.value)}
-                    className="w-full bg-transparent border-b-2 border-[#000000] py-2 text-[#000000] placeholder-[#000000] text-lg text-center focus:border-[#000000] focus:outline-none transition-all duration-300 hover:border-[#000000]"
-                    style={{ fontFamily: 'var(--font-spartan)', fontWeight: '350' }}
-                  />
-                </motion.div>
-
-                {/* Date Field */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.5, ease: "easeOut", delay: 1.2 }}
-                  viewport={{ once: false }}
-                >
-                  <input
-                    type="text"
-                    placeholder="When is your special day ?"
-                    value={formData.date}
-                    onChange={(e) => handleInputChange('date', e.target.value)}
-                    className="w-full bg-transparent border-b-2 border-[#000000] py-2 text-[#000000] placeholder-[#000000] text-lg text-center focus:border-[#000000] focus:outline-none transition-all duration-300 hover:border-[#000000]"
-                    style={{ fontFamily: 'var(--font-spartan)', fontWeight: '350' }}
-                  />
-                </motion.div>
-
-                {/* Budget Selection */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.5, ease: "easeOut", delay: 1.4 }}
-                  viewport={{ once: false }}
-                >
-                  <p 
-                    className="text-[#000000] text-xl mb-2 text-center whitespace-pre-line"
-                    style={{ fontFamily: 'var(--font-spartan)', fontWeight: '500' }}
+              {!isSubmitted ? (
+                <form onSubmit={handleSubmit} className="space-y-8 px-4">
+                  {/* Name Field */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.5, ease: "easeOut", delay: 1 }}
+                    viewport={{ once: false }}
                   >
-                    {EXPLORE_DATES_CONSTANTS.form.budget.label}
-                  </p>
-                  <div className="grid grid-cols-3 gap-2">
-                    {EXPLORE_DATES_CONSTANTS.form.budget.options.map((option, index) => (
-                      <motion.button
-                        key={option.value}
-                        type="button"
-                        onClick={() => setSelectedBudget(option.value)}
-                        className={`p-2 rounded-lg text-center transition-all duration-300 text-sm hover:scale-105 ${
-                          selectedBudget === option.value
-                            ? 'bg-[#523329] text-white shadow-lg'
-                            : 'bg-white text-[#523329] hover:bg-gray-50 hover:shadow-md'
-                        }`}
-                        style={{ fontFamily: 'var(--font-spartan)', fontWeight: '350' }}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        transition={{ 
-                          duration: 0.4, 
-                          ease: "easeOut", 
-                        }}
-                        viewport={{ once: false }}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        {option.label}
-                      </motion.button>
-                    ))}
-                  </div>
-                </motion.div>
+                    <input
+                      type="text"
+                      placeholder="Name"
+                      value={formData.name}
+                      onChange={(e) => handleInputChange('name', e.target.value)}
+                      className="w-full bg-transparent border-b-2 border-[#000000] py-2 text-[#000000] placeholder-[#000000] text-lg text-center focus:border-[#000000] focus:outline-none transition-all duration-300 hover:border-[#000000]"
+                      style={{ fontFamily: 'var(--font-spartan)', fontWeight: '350' }}
+                    />
+                  </motion.div>
 
-                {/* Phone Field */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
-                  viewport={{ once: false }}
-                >
-                  <input
-                    type="tel"
-                    placeholder="Phone number"
-                    value={formData.phone}
-                    onChange={(e) => handleInputChange('phone', e.target.value)}
-                    className="w-full bg-transparent border-b-2 border-[#000000] py-2 text-[#000000] placeholder-[#000000] text-lg text-center focus:border-[#000000] focus:outline-none transition-all duration-300 hover:border-[#000000]"
+                  {/* Date Field */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.5, ease: "easeOut", delay: 1.2 }}
+                    viewport={{ once: false }}
+                  >
+                    <input
+                      type="text"
+                      placeholder="When is your special day ?"
+                      value={formData.date}
+                      onChange={(e) => handleInputChange('date', e.target.value)}
+                      className="w-full bg-transparent border-b-2 border-[#000000] py-2 text-[#000000] placeholder-[#000000] text-lg text-center focus:border-[#000000] focus:outline-none transition-all duration-300 hover:border-[#000000]"
+                      style={{ fontFamily: 'var(--font-spartan)', fontWeight: '350' }}
+                    />
+                  </motion.div>
+
+                  {/* Budget Selection */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.5, ease: "easeOut", delay: 1.4 }}
+                    viewport={{ once: false }}
+                  >
+                    <p 
+                      className="text-[#000000] text-xl mb-2 text-center whitespace-pre-line"
+                      style={{ fontFamily: 'var(--font-spartan)', fontWeight: '500' }}
+                    >
+                      {EXPLORE_DATES_CONSTANTS.form.budget.label}
+                    </p>
+                    <div className="grid grid-cols-3 gap-2">
+                      {EXPLORE_DATES_CONSTANTS.form.budget.options.map((option, index) => (
+                        <motion.button
+                          key={option.value}
+                          type="button"
+                          onClick={() => setSelectedBudget(option.value)}
+                          className={`p-2 rounded-lg text-center transition-all duration-300 text-sm hover:scale-105 ${
+                            selectedBudget === option.value
+                              ? 'bg-[#523329] text-white shadow-lg'
+                              : 'bg-white text-[#523329] hover:bg-gray-50 hover:shadow-md'
+                          }`}
+                          style={{ fontFamily: 'var(--font-spartan)', fontWeight: '350' }}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          transition={{ 
+                            duration: 0.4, 
+                            ease: "easeOut", 
+                          }}
+                          viewport={{ once: false }}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          {option.label}
+                        </motion.button>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  {/* Phone Field */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
+                    viewport={{ once: false }}
+                  >
+                    <input
+                      type="tel"
+                      placeholder="Phone number"
+                      value={formData.phone}
+                      onChange={(e) => handleInputChange('phone', e.target.value)}
+                      className="w-full bg-transparent border-b-2 border-[#000000] py-2 text-[#000000] placeholder-[#000000] text-lg text-center focus:border-[#000000] focus:outline-none transition-all duration-300 hover:border-[#000000]"
+                      style={{ fontFamily: 'var(--font-spartan)', fontWeight: '350' }}
+                    />
+                  </motion.div>
+
+                  {/* Submit Button */}
+                  <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+                viewport={{ once: false }}
+                className="mt-8 text-center"
+              >
+                <Button 
+                  text={isSubmitting ? "Submitting..." : EXPLORE_DATES_CONSTANTS.form.button.text}
+                  bg="bg-[#840032]"
+                  hover="hover:bg-[#70022c]"
+                  className="px-6 py-4 text-xl font-bold uppercase tracking-wide"
+                  style={{ fontFamily: 'var(--font-cinzel)', fontWeight: '300' }}
+                  disabled={isSubmitting}
+                />
+              </motion.div>
+                </form>
+              ) : (
+                /* Success Message */
+                <div className="text-center px-4">
+                  <motion.h3 
+                    className="text-2xl font-bold text-[#523329] mb-4"
+                    style={{ fontFamily: 'var(--font-spartan)', fontWeight: '400' }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
+                  >
+                    Thank you for sharing your details
+                  </motion.h3>
+                  <motion.p 
+                    className="text-lg text-[#523329]"
                     style={{ fontFamily: 'var(--font-spartan)', fontWeight: '350' }}
-                  />
-                </motion.div>
-
-                {/* Submit Button */}
-                <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-              viewport={{ once: false }}
-              className="mt-8 text-center"
-            >
-              <Button 
-                text={EXPLORE_DATES_CONSTANTS.form.button.text}
-                bg="bg-[#840032]"
-                hover="hover:bg-[#70022c]"
-                className="px-6 py-4 text-xl font-bold uppercase tracking-wide"
-                style={{ fontFamily: 'var(--font-cinzel)', fontWeight: '300' }}
-              />
-            </motion.div>
-              </form>
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+                  >
+                    A member of our team will reach out shortly to begin your experience.
+                  </motion.p>
+                </div>
+              )}
             </motion.div>
           </motion.div>
         </div>

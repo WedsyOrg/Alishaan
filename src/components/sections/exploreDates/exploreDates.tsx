@@ -1,6 +1,6 @@
 'use client';
 
-import { ComponentProps } from 'react';
+import { ComponentProps, useEffect } from 'react';
 import Button from '../../ui/Button';
 
 interface ExploreDatesSectionProps extends ComponentProps<'section'> {
@@ -12,6 +12,32 @@ export default function ExploreDatesSection({
   className = '',
   ...props 
 }: ExploreDatesSectionProps) {
+  useEffect(() => {
+    // Load Calendly script if not already loaded
+    if (!document.querySelector('script[src*="calendly.com"]')) {
+      const script = document.createElement('script');
+      script.src = 'https://assets.calendly.com/assets/external/widget.js';
+      script.async = true;
+      document.head.appendChild(script);
+    }
+  }, []);
+
+  const openCalendly = () => {
+    // Wait a bit for Calendly to load
+    setTimeout(() => {
+      // @ts-expect-error - Calendly is loaded from external script
+      if (window.Calendly) {
+        // @ts-expect-error - Calendly widget method
+        window.Calendly.initPopupWidget({
+          url: 'https://calendly.com/alishaan-info/30min?hide_event_type_details=1&hide_gdpr_banner=1&text_color=000000'
+        });
+      } else {
+        // Fallback: open in new tab
+        window.open('https://calendly.com/alishaan-info/30min', '_blank');
+      }
+    }, 100);
+  };
+
   if (!isVisible) return null;
 
   return (
@@ -74,6 +100,7 @@ export default function ExploreDatesSection({
             showArrow={true}
             className="shadow-lg px-20"
             style={{ fontFamily: 'var(--font-cinzel)',fontWeight: '300' }}
+            onClick={openCalendly}
           />
         </div>
       </div>
