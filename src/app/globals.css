@@ -87,3 +87,6 @@ html::-webkit-scrollbar {
   animation: scroll 30s linear infinite;
 }
 
+html, body {
+  overflow-x: hidden;
+}
