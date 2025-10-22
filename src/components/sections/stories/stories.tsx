@@ -7,6 +7,7 @@ import DesktopCarousel from './components/DesktopCarousel';
 import GalleryView from './components/GalleryView';
 import PaginationDots from './components/PaginationDots';
 import Button from '../../ui/Button';
+import ContactForm from '../../ui/ContactForm';
 import { storiesData } from './stories-data';
 import { motion } from 'framer-motion';
 
@@ -20,6 +21,7 @@ export default function StoriesSection({
   ...props 
 }: StoriesSectionProps) {
   const [currentIndex, setCurrentIndex] = useState(2); // Start with third image (index 2) as shown in design
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   if (!isVisible) return null;
 
@@ -29,6 +31,11 @@ export default function StoriesSection({
 
   const handleDotClick = (index: number) => {
     setCurrentIndex(index);
+  };
+
+  const handleFormSuccess = () => {
+    setIsFormOpen(false);
+    alert('Thank you! We will contact you soon to create your story.');
   };
 
   return (
@@ -133,9 +140,20 @@ export default function StoriesSection({
             hover="hover:bg-[#6b0029]"
             className="shadow-lg"
             style={{ fontFamily: 'var(--font-cinzel)',fontWeight: '300' }}
+            onClick={() => setIsFormOpen(true)}
           />
         </motion.div>
       </div>
+
+      {/* Contact Form Popup */}
+      <ContactForm
+        isOpen={isFormOpen}
+        onClose={() => setIsFormOpen(false)}
+        title="Let's Create Your Story"
+        subtitle="Share your details and we'll help you create your perfect wedding story"
+        submitText="Start My Story"
+        onSubmitSuccess={handleFormSuccess}
+      />
     </section>
   );
 }

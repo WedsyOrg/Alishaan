@@ -1,5 +1,6 @@
 'use client';
 import Button from '@/components/ui/Button';
+import ContactForm from '@/components/ui/ContactForm';
 import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
@@ -62,6 +63,14 @@ function Counter({ end, duration = 2, decimals = 0, suffix = '' }: {
 }
 
 export default function Homepage() {
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
+  const handleFormSuccess = () => {
+    setIsFormOpen(false);
+    // You can add additional success handling here
+    alert('Thank you! We will contact you soon.');
+  };
+
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Background Image */}
@@ -170,6 +179,7 @@ export default function Homepage() {
             hover="hover:bg-white hover:scale-105"
             className="shadow-lg backdrop-blur-sm  md:w-[25%]"
             style={{ fontFamily: 'var(--font-cinzel)',fontWeight: '300' }}
+            onClick={() => setIsFormOpen(true)}
           />
         </motion.div>
 
@@ -231,6 +241,16 @@ export default function Homepage() {
         </div>
         </div>
     </div>
+
+    {/* Contact Form Popup */}
+    <ContactForm
+      isOpen={isFormOpen}
+      onClose={() => setIsFormOpen(false)}
+      title="Get Free Consultation"
+      subtitle="Fill in your details and we'll get back to you"
+      submitText="Get Consultation"
+      onSubmitSuccess={handleFormSuccess}
+    />
     </section>
   );
 }

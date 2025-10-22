@@ -2,10 +2,19 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 import WEDDING_PLANNING_CONSTANTS from '@/constants/weddingPlanning.json';
 import Button from '@/components/ui/Button';
+import ContactForm from '@/components/ui/ContactForm';
 
 export default function WeddingPlanning() {
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
+  const handleFormSuccess = () => {
+    setIsFormOpen(false);
+    alert('Thank you! We will connect you with an expert soon.');
+  };
+
   return (
     <section className="min-h-screen flex flex-col lg:flex-row">
       {/* Image Section - Mobile Top, Desktop Right */}
@@ -36,7 +45,9 @@ export default function WeddingPlanning() {
               text="CONNECT WITH AN EXPERT"
               bg='bg-[#523329]'
               hover='hover:bg-[#442c24]'
-              className="px-8 py-3 text-sm font-normal" style={{ fontFamily: 'var(--font-cinzel)', fontWeight: '300' }}
+              className="px-8 py-3 text-sm font-normal" 
+              style={{ fontFamily: 'var(--font-cinzel)', fontWeight: '300' }}
+              onClick={() => setIsFormOpen(true)}
             />
           </motion.div>
         </div>
@@ -130,11 +141,22 @@ export default function WeddingPlanning() {
                 hover='hover:bg-[#442c24]'
                 className="px-8 py-3 text-sm font-normal"
                 style={{ fontFamily: 'var(--font-cinzel)', fontWeight: '300' }}
+                onClick={() => setIsFormOpen(true)}
               />
             </motion.div>
           </div>
         </div>
       </div>
+
+      {/* Contact Form Popup */}
+      <ContactForm
+        isOpen={isFormOpen}
+        onClose={() => setIsFormOpen(false)}
+        title="Connect with an Expert"
+        subtitle="Share your details and we'll connect you with our wedding planning experts"
+        submitText="Connect Now"
+        onSubmitSuccess={handleFormSuccess}
+      />
     </section>
   );
 }
