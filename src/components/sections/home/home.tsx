@@ -177,7 +177,7 @@ export default function Homepage() {
             bg="bg-white/90"
             textColor="text-gray-800"
             hover="hover:bg-white hover:scale-105"
-            className="shadow-lg backdrop-blur-sm  md:w-[25%]"
+            className="shadow-lg backdrop-blur-sm md:w-[33%] lg:w-[25%]"
             style={{ fontFamily: 'var(--font-cinzel)',fontWeight: '300' }}
             onClick={() => setIsFormOpen(true)}
           />
@@ -201,10 +201,10 @@ export default function Homepage() {
             viewport={{ once: false, amount: 0.5 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
           >
-            <div className="text-2xl md:text-4xl font-bold mb-1 font-poiret-one">
+            <div className="text-2xl md:text-4xl lg:text-5xl font-bold mb-1 font-poiret-one">
               <Counter end={12} duration={2} decimals={0} suffix=" years +" />
             </div>
-            <div className="text-md md:text-lg opacity-90 font-montserrat">
+            <div className="text-md md:text-lg lg:text-2xl opacity-90 font-montserrat">
               Experience
             </div>
           </motion.div>
@@ -216,10 +216,10 @@ export default function Homepage() {
             viewport={{ once: false, amount: 0.5 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
           >
-            <div className="text-2xl md:text-4xl font-bold mb-1 font-poiret-one">
+            <div className="text-2xl md:text-4xl lg:text-5xl font-bold mb-1 font-poiret-one">
               <Counter end={4.9} duration={2} decimals={1} suffix="/5" />
             </div>
-            <div className="text-md md:text-lg opacity-90 font-montserrat">
+            <div className="text-md md:text-lg lg:text-2xl opacity-90 font-montserrat">
               Google
             </div>
           </motion.div>
@@ -231,10 +231,10 @@ export default function Homepage() {
             viewport={{ once: false, amount: 0.5 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.8 }}
           >
-            <div className="text-2xl md:text-4xl font-bold mb-1 font-poiret-one">
+            <div className="text-2xl md:text-4xl lg:text-5xl font-bold mb-1 font-poiret-one">
               <Counter end={1250} duration={2.5} decimals={0} suffix="+" />
             </div>
-            <div className="text-md md:text-lg opacity-90 font-montserrat">
+            <div className="text-md md:text-lg lg:text-2xl opacity-90 font-montserrat">
               Weddings
             </div>
           </motion.div>
