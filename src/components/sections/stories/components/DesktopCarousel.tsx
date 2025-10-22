@@ -1,6 +1,8 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 import { StoryImage } from '../stories-data';
 
 interface DesktopCarouselProps {
@@ -12,141 +14,101 @@ export default function DesktopCarousel({
   stories, 
   currentIndex 
 }: DesktopCarouselProps) {
-  // Fixed skeleton pattern: small-medium-large-medium-small
-  // Images swap into these fixed positions based on currentIndex
-  const getImageForPosition = (positionIndex: number, current: number) => {
-    // Map fixed positions to actual image indices
-    // Position indices: 0=small-left, 1=medium-left, 2=large-center, 3=medium-right, 4=small-right
-    let imageIndex = current - 2 + positionIndex; // Center the current image at position 2
-    
-    // Handle wrapping for circular arrangement
-    if (imageIndex < 0) imageIndex += stories.length;
-    if (imageIndex >= stories.length) imageIndex -= stories.length;
-    
-    return imageIndex;
+  const [offset, setOffset] = useState(0);
+
+  // Continuously increment offset for infinite loop
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setOffset((prev) => (prev + 1) % stories.length);
+    }, 3000); // Change every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [stories.length]);
+
+  // Get image index for each container position with continuous offset
+  const getImageIndex = (position: number) => {
+    return (offset + position) % stories.length;
   };
 
-  const getImagePosition = (positionIndex: number) => {
-    // Fixed skeleton pattern based on position index
-    switch (positionIndex) {
-      case 0: return 'small-left';      // Fixed small position
-      case 1: return 'medium-left';     // Fixed medium position
-      case 2: return 'large-center';    // Fixed large position
-      case 3: return 'medium-right';    // Fixed medium position
-      case 4: return 'small-right';     // Fixed small position
-      default: return 'hidden';
-    }
-  };
-
-  const getImageSize = (position: string) => {
-    switch (position) {
-      case 'small-left':
-      case 'small-right':
-        return 'w-32 h-40'; // Small images - more square
-      case 'medium-left':
-      case 'medium-right':
-        return 'w-48 h-56'; // Medium images
-      case 'large-center':
-        return 'w-64 h-80'; // Large image - more rectangular
-      default:
-        return 'w-32 h-40';
-    }
-  };
-
-  const getImageOpacity = (position: string) => {
-    return position === 'large-center' ? 'opacity-100' : 'opacity-70';
-  };
+  // FIXED container configurations
+  const containers = [
+    { width: 'w-52', height: 'h-60', opacity: 'opacity-70', position: 0 },      // small left
+    { width: 'w-68', height: 'h-86', opacity: 'opacity-70', position: 1 },      // medium left  
+    { width: 'w-84', height: 'h-120', opacity: 'opacity-100', position: 2 },    // large center
+    { width: 'w-68', height: 'h-86', opacity: 'opacity-70', position: 3 },      // medium right
+    { width: 'w-52', height: 'h-60', opacity: 'opacity-70', position: 4 },      // small right
+  ];
 
   return (
-    <div className="hidden lg:flex items-center justify-center gap-6 ">
-      {/* Fixed skeleton positions - only image content changes */}
-      <div className="relative w-52 h-60 rounded-xl overflow-hidden opacity-70">
-        <div
-          key={stories[getImageForPosition(0, currentIndex)].id}
-          className="absolute inset-0 rounded-inherit overflow-hidden"
-        >
-          <Image
-            src={stories[getImageForPosition(0, currentIndex)].mainImage}
-            alt={`Wedding story ${stories[getImageForPosition(0, currentIndex)].id}`}
-            fill
-            className="object-cover"
-            sizes="(min-width: 1024px) 25vw, 0vw"
-          />
-        </div>
-      </div>
+    <div className="hidden lg:flex items-center justify-center gap-6">
+      {/* 5 FIXED containers - images flow through them */}
+      {containers.map((container, idx) => {
+        const imageIndex = getImageIndex(container.position);
+        const story = stories[imageIndex];
+        const isCenter = idx === 2;
 
-      <div className="relative w-68 h-86 rounded-xl overflow-hidden opacity-70">
-        <div
-          key={stories[getImageForPosition(1, currentIndex)].id}
-          className="absolute inset-0 rounded-inherit overflow-hidden"
-        >
-          <Image
-            src={stories[getImageForPosition(1, currentIndex)].mainImage}
-            alt={`Wedding story ${stories[getImageForPosition(1, currentIndex)].id}`}
-            fill
-            className="object-cover"
-            sizes="(min-width: 1024px) 25vw, 0vw"
-          />
-        </div>
-      </div>
-
-      <div className="relative w-84 h-120 rounded-xl overflow-hidden opacity-100">
-        <div
-          key={stories[getImageForPosition(2, currentIndex)].id}
-          className="absolute inset-0 rounded-inherit overflow-hidden"
-        >
-          <Image
-            src={stories[getImageForPosition(2, currentIndex)].mainImage}
-            alt={`Wedding story ${stories[getImageForPosition(2, currentIndex)].id}`}
-            fill
-            className="object-cover"
-            sizes="(min-width: 1024px) 25vw, 0vw"
-          />
-        {/* Testimonial Overlay - Always on center position */}
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent p-4">
-            <div className="flex items-start gap-3">
-              <div className="flex-shrink-0 mt-1">
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <span className="text-black font-bold text-lg leading-none">&quot;</span>
-                </div>
-              </div>
-              <p className="text-white text-sm leading-relaxed flex-1">
-                {stories[getImageForPosition(2, currentIndex)].testimonial}
-              </p>
-            </div>
+        return (
+          <div
+            key={`container-${idx}`}
+            className={`relative ${container.width} ${container.height} rounded-xl overflow-hidden ${container.opacity}`}
+          >
+            {/* Images slide through continuously with smooth overlap */}
+            <AnimatePresence initial={false}>
+              <motion.div
+                key={`image-${story.id}-${offset}`}
+                className="absolute inset-0"
+                initial={{ x: '100%', opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: '-100%', opacity: 0 }}
+                transition={{
+                  x: {
+                    duration: 1.2,
+                    ease: [0.25, 0.46, 0.45, 0.94] // Smooth cubic-bezier
+                  },
+                  opacity: {
+                    duration: 0.6,
+                    ease: "easeInOut"
+                  }
+                }}
+              >
+                <Image
+                  src={story.mainImage}
+                  alt={`Wedding story ${story.id}`}
+                  fill
+                  className="object-cover"
+                  sizes="(min-width: 1024px) 25vw, 0vw"
+                />
+                
+                {/* Testimonial Overlay - only on center container */}
+                {isCenter && (
+                  <motion.div 
+                    className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent p-4"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ 
+                      delay: 0.5,
+                      duration: 0.5,
+                      ease: "easeOut"
+                    }}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="flex-shrink-0 mt-1">
+                        <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                          <span className="text-black font-bold text-lg leading-none">&quot;</span>
+                        </div>
+                      </div>
+                      <p className="text-white text-sm leading-relaxed flex-1">
+                        {story.testimonial}
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+              </motion.div>
+            </AnimatePresence>
           </div>
-        </div>
-      </div>
-
-      <div className="relative  w-68 h-86 rounded-xl overflow-hidden opacity-70">
-        <div
-          key={stories[getImageForPosition(3, currentIndex)].id}
-          className="absolute inset-0 rounded-inherit overflow-hidden"
-        >
-          <Image
-            src={stories[getImageForPosition(3, currentIndex)].mainImage}
-            alt={`Wedding story ${stories[getImageForPosition(3, currentIndex)].id}`}
-            fill
-            className="object-cover"
-            sizes="(min-width: 1024px) 25vw, 0vw"
-          />
-        </div>
-      </div>
-
-      <div className="relative w-52 h-60 rounded-xl overflow-hidden opacity-70">
-        <div
-          key={stories[getImageForPosition(4, currentIndex)].id}
-          className="absolute inset-0 rounded-inherit overflow-hidden"
-        >
-          <Image
-            src={stories[getImageForPosition(4, currentIndex)].mainImage}
-            alt={`Wedding story ${stories[getImageForPosition(4, currentIndex)].id}`}
-            fill
-            className="object-cover"
-            sizes="(min-width: 1024px) 25vw, 0vw"
-          />
-        </div>
-      </div>
+        );
+      })}
     </div>
   );
 }

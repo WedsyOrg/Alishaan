@@ -1,7 +1,65 @@
 'use client';
 import Button from '@/components/ui/Button';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+
+// Counter component for rolling number animation
+function Counter({ end, duration = 2, decimals = 0, suffix = '' }: { 
+  end: number; 
+  duration?: number; 
+  decimals?: number;
+  suffix?: string;
+}) {
+  const [count, setCount] = useState(0);
+  const counterRef = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(counterRef, { once: false, amount: 0.1 });
+  const animationRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (isInView) {
+      setCount(0);
+      
+      const startTime = Date.now();
+      const startValue = 0;
+      
+      const animate = () => {
+        const now = Date.now();
+        const progress = Math.min((now - startTime) / (duration * 1000), 1);
+        
+        // Linear progression - uniform speed
+        const currentCount = startValue + (end - startValue) * progress;
+        setCount(currentCount);
+        
+        if (progress < 1) {
+          animationRef.current = requestAnimationFrame(animate);
+        } else {
+          setCount(end);
+        }
+      };
+      
+      animationRef.current = requestAnimationFrame(animate);
+    } else {
+      // Cancel animation and reset when out of view
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+      setCount(0);
+    }
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [isInView, end, duration]);
+
+  return (
+    <span ref={counterRef}>
+      {count.toFixed(decimals)}{suffix}
+    </span>
+  );
+}
 
 export default function Homepage() {
   return (
@@ -125,52 +183,52 @@ export default function Homepage() {
         />
 
         {/* Statistics Section */}
-        <motion.div 
-          className="flex flex-row justify-between items-center mb-0 text-white md:justify-between md:max-w-[70%] md:mx-auto md:gap-8"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.5 }}
-          transition={{ staggerChildren: 0.15, delayChildren: 1.2 }}
-        >
+        <div className="flex flex-row justify-between items-center mb-0 text-white md:justify-between md:max-w-[70%] md:mx-auto md:gap-8">
           <motion.div 
             className="flex flex-col items-center"
-            variants={{ hidden: { opacity: 0, y: 6 }, visible: { opacity: 1, y: 0 } }}
-            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.5 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
           >
-            <div className="text-2xl md:text-3xl font-bold mb-1 font-poiret-one">
-              12 years +
+            <div className="text-2xl md:text-4xl font-bold mb-1 font-poiret-one">
+              <Counter end={12} duration={2} decimals={0} suffix=" years +" />
             </div>
-            <div className="text-md md:text-sm opacity-90 font-montserrat">
+            <div className="text-md md:text-lg opacity-90 font-montserrat">
               Experience
             </div>
           </motion.div>
           
           <motion.div 
             className="flex flex-col items-center"
-            variants={{ hidden: { opacity: 0, y: 6 }, visible: { opacity: 1, y: 0 } }}
-            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.5 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
           >
-            <div className="text-2xl md:text-3xl font-bold mb-1 font-poiret-one">
-              4.9/5
+            <div className="text-2xl md:text-4xl font-bold mb-1 font-poiret-one">
+              <Counter end={4.9} duration={2} decimals={1} suffix="/5" />
             </div>
-            <div className="text-md md:text-sm opacity-90 font-montserrat">
+            <div className="text-md md:text-lg opacity-90 font-montserrat">
               Google
             </div>
           </motion.div>
           
           <motion.div 
             className="flex flex-col items-center"
-            variants={{ hidden: { opacity: 0, y: 6 }, visible: { opacity: 1, y: 0 } }}
-            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.5 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.8 }}
           >
-            <div className="text-2xl md:text-3xl font-bold mb-1 font-poiret-one">
-              1250+
+            <div className="text-2xl md:text-4xl font-bold mb-1 font-poiret-one">
+              <Counter end={1250} duration={2.5} decimals={0} suffix="+" />
             </div>
-            <div className="text-md md:text-sm opacity-90 font-montserrat">
+            <div className="text-md md:text-lg opacity-90 font-montserrat">
               Weddings
             </div>
           </motion.div>
-        </motion.div>
+        </div>
         </div>
     </div>
     </section>

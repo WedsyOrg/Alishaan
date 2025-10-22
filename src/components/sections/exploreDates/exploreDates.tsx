@@ -63,7 +63,7 @@ export default function ExploreDatesSection({
 
 
       {/* Content Overlay */}
-      <div className="relative z-10 min-h-screen flex flex-col items-center justify-between pt-20 lg:pt-32 pb-8 lg:pb-12">
+      <div className="relative z-10 min-h-screen flex flex-col items-center justify-between pt-20 lg:pt-32 pb-40">
         {/* Top Section - Heading and Subheading */}
         <div className="flex flex-col items-center">
           {/* Decorative lines spanning full width - outside padded container */}

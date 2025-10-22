@@ -31,7 +31,7 @@ export default function AllClientsSection({
 
       {/* Continuous Carousel - Full Width */}
       <div className="relative overflow-hidden w-full">
-        <div className="flex animate-scroll gap-8">
+        <div className="flex animate-scroll gap-40">
           {/* First set of images */}
           {allClientsData.map((client) => (
             <div
