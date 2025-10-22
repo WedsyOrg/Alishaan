@@ -567,7 +567,7 @@ export default function WeddingRequirement() {
                   text={isSubmitting ? "Submitting..." : EXPLORE_DATES_CONSTANTS.form.button.text}
                   bg="bg-[#840032]"
                   hover="hover:bg-[#70022c]"
-                  className="px-6 py-4 text-xl font-bold uppercase tracking-wide"
+                  className="w-full px-4 py-3 text-sm md:text-xl font-bold uppercase tracking-wide"
                   style={{ fontFamily: 'var(--font-cinzel)', fontWeight: '300' }}
                   disabled={isSubmitting}
                 />

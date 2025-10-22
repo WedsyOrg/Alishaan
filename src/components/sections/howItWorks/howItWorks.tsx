@@ -7,6 +7,7 @@ import axios from 'axios';
 import HOW_IT_WORKS_CONSTANTS from '@/constants/howItWorks.json';
 
 export default function HowItWorks() {
+
   const [activeStep, setActiveStep] = useState(0);
   const [currentBreakpoint, setCurrentBreakpoint] = useState('sm');
   const containerRef = useRef<HTMLDivElement>(null);
@@ -175,7 +176,13 @@ export default function HowItWorks() {
               Step: {activeStep + 1}/3
             </div>
           )}
-          <div className="flex-1 relative flex justify-end">
+          <motion.div 
+            className="flex-1 relative flex justify-end"
+            initial={{ opacity: 0, x: -100 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: false }}
+          >
             <Image 
               src="/assets/left.svg" 
               alt="decoration" 
@@ -183,16 +190,29 @@ export default function HowItWorks() {
               height={5}
               className="absolute -translate-y-1/2"
             />
-          </div>
-          <h1 className="text-2xl md:text-3xl lg:text-6xl leading-tight text-center mx-6 text-gray-900" style={{ 
-            fontFamily: 'var(--font-dream-avenue)', 
-            fontWeight: '400',
-            letterSpacing: '0.02em',
-            fontStyle: 'normal'
-          }}>
+          </motion.div>
+          <motion.h1 
+            className="text-2xl md:text-3xl lg:text-6xl leading-tight text-center mx-6 text-gray-900" 
+            style={{ 
+              fontFamily: 'var(--font-dream-avenue)', 
+              fontWeight: '400',
+              letterSpacing: '0.02em',
+              fontStyle: 'normal'
+            }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: false }}
+          >
             {HOW_IT_WORKS_CONSTANTS.title}
-          </h1>
-          <div className="flex-1 relative flex justify-start">
+          </motion.h1>
+          <motion.div 
+            className="flex-1 relative flex justify-start"
+            initial={{ opacity: 0, x: 100 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: false }}
+          >
             <Image 
               src="/assets/right.svg" 
               alt="decoration" 
@@ -200,14 +220,19 @@ export default function HowItWorks() {
               height={5}
               className="absolute -translate-y-1/2"
             />
-          </div>
+          </motion.div>
         </div>
 
         {/* Content Section */}
         <div className="lg:px-20 px-6 flex flex-col md:flex-row bg-[#F4F4F4] pb-12">
           {/* Image container */}
           <div className="order-1 md:order-2 md:flex-1 lg:flex-none lg:w-[32%] overflow-hidden lg:mr-25">
-            <div className="w-full rounded-2xl flex items-center justify-center my-10 p-8 md:p-10 min-h-[500px]" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)' }}>
+            <div 
+              className="w-full rounded-2xl flex items-center justify-center my-6 md:my-10 p-4 md:p-8 lg:p-10 min-h-[300px] md:min-h-[500px]"
+              style={{ 
+                boxShadow: currentBreakpoint === 'sm' ? 'none' : '0 4px 20px rgba(0, 0, 0, 0.1)'
+              }}
+            >
               {activeStep === 2 ? (
                 // Form for step 3
                 <div className="w-full max-w-[320px] flex flex-col justify-center">
@@ -265,7 +290,7 @@ export default function HowItWorks() {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5 }}
-                  className="relative w-full max-w-[320px] h-full flex items-center justify-center"
+                  className="relative w-full max-w-[200px] md:max-w-[320px] h-full flex items-center justify-center"
                 >
                   <div className="relative w-full aspect-[3/4]">
                     <Image
@@ -274,7 +299,7 @@ export default function HowItWorks() {
                       fill
                       className="object-contain"
                       priority
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      sizes="(max-width: 768px) 200px, (max-width: 1200px) 50vw, 33vw"
                     />
                   </div>
                 </motion.div>
