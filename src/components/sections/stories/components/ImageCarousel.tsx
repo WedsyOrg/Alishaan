@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
-import { StoryImage } from '../stories-data';
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { StoryImage } from "../stories-data";
 
 interface ImageCarouselProps {
   stories: StoryImage[];
@@ -10,10 +10,10 @@ interface ImageCarouselProps {
   onIndexChange: (index: number) => void;
 }
 
-export default function ImageCarousel({ 
-  stories, 
-  currentIndex, 
-  onIndexChange 
+export default function ImageCarousel({
+  stories,
+  currentIndex,
+  onIndexChange,
 }: ImageCarouselProps) {
   const [isTransitioning, setIsTransitioning] = useState(false);
 
@@ -24,9 +24,10 @@ export default function ImageCarousel({
     const id = setInterval(() => {
       if (isTransitioning) return;
       // Respect document visibility to avoid advancing in background tabs
-      if (typeof document !== 'undefined' && document.hidden) return;
+      if (typeof document !== "undefined" && document.hidden) return;
 
-      const nextIndex = currentIndex === stories.length - 1 ? 0 : currentIndex + 1;
+      const nextIndex =
+        currentIndex === stories.length - 1 ? 0 : currentIndex + 1;
       setIsTransitioning(true);
       onIndexChange(nextIndex);
       // Match manual transition timing
@@ -65,7 +66,7 @@ export default function ImageCarousel({
         aria-label="Previous image"
       >
         <Image
-          src="/assets/stories/icons/right.png"
+          src="/assets/stories/icons/Left.png"
           alt="Previous"
           width={30}
           height={40}
@@ -93,7 +94,9 @@ export default function ImageCarousel({
               {/* Quotation Mark Icon */}
               <div className="flex-shrink-0 mt-1">
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <span className="text-black font-bold text-lg leading-none">&quot;</span>
+                  <span className="text-black font-bold text-lg leading-none">
+                    &quot;
+                  </span>
                 </div>
               </div>
 
@@ -114,7 +117,7 @@ export default function ImageCarousel({
         aria-label="Next image"
       >
         <Image
-          src="/assets/stories/icons/left.png"
+          src="/assets/stories/icons/Right.png"
           alt="Next"
           width={20}
           height={20}

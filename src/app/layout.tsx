@@ -1,6 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Montserrat, Poiret_One, Cinzel, Dancing_Script, League_Spartan, Cinzel_Decorative } from "next/font/google";
-import localFont from 'next/font/local';
+import {
+  Geist,
+  Geist_Mono,
+  Montserrat,
+  Poiret_One,
+  Cinzel,
+  Dancing_Script,
+  League_Spartan,
+  Cinzel_Decorative,
+} from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -32,27 +41,27 @@ const cinzel = Cinzel({
 });
 
 const dreamAvenue = localFont({
-  src: '../../public/fonts/FontsFree-Net-Dream-Avenue.ttf',
-  variable: '--font-dream-avenue',
-  display: 'swap',
+  src: "../../public/fonts/FontsFree-Net-Dream-Avenue.ttf",
+  variable: "--font-dream-avenue",
+  display: "swap",
 });
 
 const dancingScript = Dancing_Script({
-  variable: '--font-dancing-script',
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  variable: "--font-dancing-script",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const spartan = League_Spartan({
-  variable: '--font-spartan',
-  subsets: ['latin'],
-  weight: ['300', '400'],
+  variable: "--font-spartan",
+  subsets: ["latin"],
+  weight: ["300", "400"],
 });
 
 const cinzelDecorative = Cinzel_Decorative({
-  variable: '--font-cinzel-decorative',
-  subsets: ['latin'],
-  weight: ['400', '700', '900'],
+  variable: "--font-cinzel-decorative",
+  subsets: ["latin"],
+  weight: ["400", "700", "900"],
 });
 
 export const metadata: Metadata = {
@@ -68,8 +77,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
-        <meta httpEquiv="Permissions-Policy" content="payment=*, camera=*, microphone=*" />
+        <link
+          href="https://assets.calendly.com/assets/external/widget.css"
+          rel="stylesheet"
+        />
+        <meta
+          httpEquiv="Permissions-Policy"
+          content="payment=*, camera=*, microphone=*"
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} ${poiretOne.variable} ${cinzel.variable} ${dreamAvenue.variable} ${dancingScript.variable} ${spartan.variable} ${cinzelDecorative.variable} antialiased`}

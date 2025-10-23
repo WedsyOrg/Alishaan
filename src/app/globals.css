@@ -50,27 +50,27 @@ html::-webkit-scrollbar {
 }
 
 .font-montserrat {
-  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  font-family: var(--font-montserrat), "Montserrat", sans-serif;
 }
 
 .font-poiret-one {
-  font-family: var(--font-poiret-one), 'Poiret One', cursive;
+  font-family: var(--font-poiret-one), "Poiret One", cursive;
 }
 
 .font-dancing {
-  font-family: var(--font-dancing-script), 'Dancing Script', cursive;
+  font-family: var(--font-dancing-script), "Dancing Script", cursive;
 }
 
 .font-dream-avenue {
-  font-family: var(--font-dream-avenue), 'Dream Avenue', serif;
+  font-family: var(--font-dream-avenue), "Dream Avenue", serif;
 }
 
 .font-cinzel {
-  font-family: var(--font-cinzel), 'Cinzel', serif;
+  font-family: var(--font-cinzel), "Cinzel", serif;
 }
 
 .font-spartan {
-  font-family: var(--font-spartan), 'League Spartan', 'Spartan', sans-serif;
+  font-family: var(--font-spartan), "League Spartan", "Spartan", sans-serif;
 }
 
 /* Continuous carousel animation with consistent gaps */
@@ -87,6 +87,8 @@ html::-webkit-scrollbar {
   animation: scroll 30s linear infinite;
 }
 
-html, body {
+html,
+body {
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
