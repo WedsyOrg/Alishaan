@@ -66,6 +66,12 @@ export default function ExploreDatesSection({
         className="absolute inset-0  w-full h-full object-cover"
         preload="auto"
       >
+        {/* MP4 format for cross-browser compatibility (Chrome, Firefox, Edge, Safari) */}
+        <source
+          src="/assets/exploreDates/Explore - Angana The Courtyard - Avani Leisure (1080p, h264) (1).mp4"
+          type="video/mp4"
+        />
+        {/* Fallback MOV for Safari */}
         <source
           src="/assets/exploreDates/Explore - Angana The Courtyard - Avani Leisure (1080p, h264) (1).MOV"
           type="video/quicktime"
