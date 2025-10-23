@@ -176,12 +176,6 @@ export default function HowItWorks() {
       >
         {/* Title Section */}
         <div className="flex items-center justify-center mb-10 px-6 pt-12">
-          {/* Debug indicator */}
-          {isSticky && (
-            <div className="absolute top-4 right-4 bg-red-500 text-white px-2 py-1 rounded text-xs">
-              Step: {activeStep + 1}/3
-            </div>
-          )}
           <motion.div
             className="flex-1 relative flex justify-end"
             initial={{ opacity: 0, x: -100 }}
