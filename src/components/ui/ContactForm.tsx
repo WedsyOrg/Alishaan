@@ -1,7 +1,7 @@
-'use client';
-import { useState } from 'react';
-import axios from 'axios';
-import { motion, AnimatePresence } from 'framer-motion';
+"use client";
+import { useState } from "react";
+import axios from "axios";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface ContactFormProps {
   isOpen: boolean;
@@ -12,22 +12,22 @@ interface ContactFormProps {
   onSubmitSuccess?: () => void;
 }
 
-export default function ContactForm({ 
-  isOpen, 
-  onClose, 
+export default function ContactForm({
+  isOpen,
+  onClose,
   title = "Please enter your details",
   subtitle,
   submitText = "Submit",
-  onSubmitSuccess
+  onSubmitSuccess,
 }: ContactFormProps) {
   const [formData, setFormData] = useState({
-    name: '',
-    phone: ''
+    name: "",
+    phone: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -35,22 +35,22 @@ export default function ContactForm({
     setIsSubmitting(true);
 
     try {
-      const response = await axios.post('http://localhost:8090/contact-form/', {
+      const response = await axios.post("http://localhost:8090/contact-form/", {
         name: formData.name,
         phone: formData.phone,
-        email: '', // Default empty email
+        email: "", // Default empty email
         budget: 0, // Default budget
         guestCount: 0, // Default guest count
-        eventDate: '', // Default empty date
-        venue: '', // Default empty venue
-        additionalInfo: '' // Default empty additional info
+        eventDate: "", // Default empty date
+        venue: "", // Default empty venue
+        additionalInfo: "", // Default empty additional info
       });
 
-      console.log('Form submitted successfully:', response.data);
-      
+      console.log("Form submitted successfully:", response.data);
+
       // Reset form
-      setFormData({ name: '', phone: '' });
-      
+      setFormData({ name: "", phone: "" });
+
       // Call success callback if provided
       if (onSubmitSuccess) {
         onSubmitSuccess();
@@ -59,8 +59,8 @@ export default function ContactForm({
         onClose();
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('Failed to submit form. Please try again.');
+      console.error("Error submitting form:", error);
+      alert("Failed to submit form. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -86,13 +86,13 @@ export default function ContactForm({
               transition={{ duration: 0.3, ease: "easeOut" }}
               className="bg-white rounded-2xl p-8 w-full max-w-md relative"
               onClick={(e) => e.stopPropagation()}
-              style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)' }}
+              style={{ boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)" }}
             >
               {/* Close Button */}
               <button
                 onClick={onClose}
                 className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
-                style={{ fontFamily: 'var(--font-spartan)' }}
+                style={{ fontFamily: "var(--font-spartan)" }}
               >
                 ✕
               </button>
@@ -100,16 +100,16 @@ export default function ContactForm({
               {/* Form Content */}
               <div className="w-full flex flex-col justify-center">
                 <div className="mb-6 text-center">
-                  <h3 
+                  <h3
                     className="text-lg md:text-xl font-normal text-[#3C2415] mb-2"
-                    style={{ fontFamily: 'Montserrat, sans-serif' }}
+                    style={{ fontFamily: "Montserrat, sans-serif" }}
                   >
                     {title}
                   </h3>
                   {subtitle && (
-                    <p 
+                    <p
                       className="text-sm text-gray-600"
-                      style={{ fontFamily: 'var(--font-spartan)' }}
+                      style={{ fontFamily: "var(--font-spartan)" }}
                     >
                       {subtitle}
                     </p>
@@ -123,9 +123,11 @@ export default function ContactForm({
                       type="text"
                       placeholder="Name"
                       value={formData.name}
-                      onChange={(e) => handleInputChange('name', e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("name", e.target.value)
+                      }
                       className="w-full bg-transparent border-b border-gray-300 py-2 text-[#3C2415] placeholder-gray-500 text-sm focus:border-gray-500 focus:outline-none transition-colors text-center"
-                      style={{ fontFamily: 'var(--font-spartan)' }}
+                      style={{ fontFamily: "var(--font-spartan)" }}
                       required
                     />
                   </div>
@@ -136,9 +138,11 @@ export default function ContactForm({
                       type="tel"
                       placeholder="Phone number"
                       value={formData.phone}
-                      onChange={(e) => handleInputChange('phone', e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("phone", e.target.value)
+                      }
                       className="w-full bg-transparent border-b border-gray-300 py-2 text-[#3C2415] placeholder-gray-500 text-sm focus:border-gray-500 focus:outline-none transition-colors text-center"
-                      style={{ fontFamily: 'var(--font-spartan)' }}
+                      style={{ fontFamily: "var(--font-spartan)" }}
                       required
                     />
                   </div>
@@ -148,9 +152,9 @@ export default function ContactForm({
                     type="submit"
                     disabled={isSubmitting}
                     className="w-full bg-[#840032] text-white py-3 rounded-lg font-semibold uppercase tracking-wide hover:bg-[#820032] transition-colors mt-6 text-sm disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-                    style={{ fontFamily: 'var(--font-cinzel)' }}
+                    style={{ fontFamily: "var(--font-cinzel)" }}
                   >
-                    {isSubmitting ? 'Submitting...' : submitText}
+                    {isSubmitting ? "Submitting..." : submitText}
                   </button>
                 </form>
               </div>

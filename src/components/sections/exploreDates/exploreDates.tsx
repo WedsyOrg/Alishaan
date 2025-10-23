@@ -1,26 +1,36 @@
-'use client';
+"use client";
 
-import { ComponentProps, useEffect } from 'react';
-import Button from '../../ui/Button';
+import { ComponentProps, useEffect, useRef } from "react";
+import Button from "../../ui/Button";
 
-interface ExploreDatesSectionProps extends ComponentProps<'section'> {
+interface ExploreDatesSectionProps extends ComponentProps<"section"> {
   isVisible?: boolean;
 }
 
-export default function ExploreDatesSection({ 
+export default function ExploreDatesSection({
   isVisible = true,
-  className = '',
-  ...props 
+  className = "",
+  ...props
 }: ExploreDatesSectionProps) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
   useEffect(() => {
     // Load Calendly script if not already loaded
     if (!document.querySelector('script[src*="calendly.com"]')) {
-      const script = document.createElement('script');
-      script.src = 'https://assets.calendly.com/assets/external/widget.js';
+      const script = document.createElement("script");
+      script.src = "https://assets.calendly.com/assets/external/widget.js";
       script.async = true;
       document.head.appendChild(script);
     }
   }, []);
+
+  // Ensure video loops continuously
+  const handleVideoEnded = () => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.play();
+    }
+  };
 
   const openCalendly = () => {
     // Wait a bit for Calendly to load
@@ -29,11 +39,11 @@ export default function ExploreDatesSection({
       if (window.Calendly) {
         // @ts-expect-error - Calendly widget method
         window.Calendly.initPopupWidget({
-          url: 'https://calendly.com/alishaan-info/30min?hide_event_type_details=1&hide_gdpr_banner=1&text_color=000000'
+          url: "https://calendly.com/alishaan-info/30min?hide_event_type_details=1&hide_gdpr_banner=1&text_color=000000",
         });
       } else {
         // Fallback: open in new tab
-        window.open('https://calendly.com/alishaan-info/30min', '_blank');
+        window.open("https://calendly.com/alishaan-info/30min", "_blank");
       }
     }, 100);
   };
@@ -41,43 +51,53 @@ export default function ExploreDatesSection({
   if (!isVisible) return null;
 
   return (
-    <section 
+    <section
       className={`relative min-h-screen w-full overflow-hidden ${className}`}
       {...props}
     >
       {/* Video Background */}
       <video
+        ref={videoRef}
         autoPlay
         loop
         muted
         playsInline
+        onEnded={handleVideoEnded}
         className="absolute inset-0  w-full h-full object-cover"
+        preload="auto"
       >
-        <source 
-          src="/assets/exploreDates/Explore - Angana The Courtyard - Avani Leisure (1080p, h264) (1).MOV" 
-          type="video/mp4" 
+        <source
+          src="/assets/exploreDates/Explore - Angana The Courtyard - Avani Leisure (1080p, h264) (1).MOV"
+          type="video/quicktime"
         />
+        {/* Fallback message */}
+        Your browser does not support the video tag.
       </video>
       {/* Dark overlay on top of video */}
-<div className="absolute inset-0 bg-black/50"></div>
-
+      <div className="absolute inset-0 bg-black/50"></div>
 
       {/* Content Overlay */}
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-between pt-20 lg:pt-32 pb-40">
         {/* Top Section - Heading and Subheading */}
         <div className="flex flex-col items-center">
           {/* Decorative lines spanning full width - outside padded container */}
-          <div className="absolute left-0 right-0 flex items-center justify-center mb-6" style={{top: '5rem'}}>
+          <div
+            className="absolute left-0 right-0 flex items-center justify-center mb-6"
+            style={{ top: "5rem" }}
+          >
             {/* Left decorative line */}
             <div className="flex-1 h-0.5 bg-white min-w-0"></div>
-            
+
             {/* Main heading with container */}
             <div className="flex-shrink-0 mx-4 lg:mx-8 max-w-[16rem] md:max-w-none">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-normal text-white leading-none text-center" style={{ fontFamily: 'var(--font-dream-avenue)' }}>
+              <h2
+                className="text-4xl md:text-5xl lg:text-6xl font-normal text-white leading-none text-center"
+                style={{ fontFamily: "var(--font-dream-avenue)" }}
+              >
                 Your perfect venue awaits
               </h2>
             </div>
-            
+
             {/* Right decorative line */}
             <div className="flex-1 h-0.5 bg-white min-w-0"></div>
           </div>
@@ -92,14 +112,14 @@ export default function ExploreDatesSection({
 
         {/* Bottom Section - Button with consistent spacing */}
         <div className="flex justify-center w-full px-4 md:px-8 lg:px-8">
-          <Button 
+          <Button
             text="EXPLORE DATES"
             bg="bg-white/60"
             textColor="text-gray-800"
             hover="hover:bg-white/90"
             showArrow={true}
             className="shadow-lg px-20"
-            style={{ fontFamily: 'var(--font-cinzel)',fontWeight: '300' }}
+            style={{ fontFamily: "var(--font-cinzel)", fontWeight: "300" }}
             onClick={openCalendly}
           />
         </div>

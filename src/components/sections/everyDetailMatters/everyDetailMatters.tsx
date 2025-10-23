@@ -1,39 +1,40 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { motion } from 'framer-motion';
-import EVERY_DETAIL_MATTERS_CONSTANTS from '@/constants/everyDetailMatters.json';
-import Button from '@/components/ui/Button';
+import Image from "next/image";
+import { motion } from "framer-motion";
+import EVERY_DETAIL_MATTERS_CONSTANTS from "@/constants/everyDetailMatters.json";
+import Button from "@/components/ui/Button";
 
 export default function EveryDetailMatters() {
   return (
-    <section className="bg-white py-12 md:py-16 lg:py-20" style={{ boxShadow: '0 -8px 16px -4px rgba(0, 0, 0, 0.15)' }}>
+    <section
+      className="bg-white py-12 md:py-16 lg:py-20"
+      style={{ boxShadow: "0 -8px 16px -4px rgba(0, 0, 0, 0.15)" }}
+    >
       {/* Container */}
       {/* Title with horizontal line */}
-      <motion.div 
-          className="flex items-center justify-center lg:justify-start mb-10 md:mb-14 lg:mb-16 lg:pl-[16%]"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: false }}
+      <motion.div
+        className="flex items-center justify-center lg:justify-start mb-10 md:mb-14 lg:mb-16 lg:pl-[16%]"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: false }}
+      >
+        <h2
+          className="text-4xl lg:text-5xl lg:mr-6 lg:md:mr-8 whitespace-nowrap text-black"
+          style={{
+            fontFamily: "var(--font-dream-avenue)",
+          }}
         >
-          <h2 
-            className="text-4xl lg:text-5xl lg:mr-6 lg:md:mr-8 whitespace-nowrap text-black"
-            style={{ 
-              fontFamily: 'var(--font-dream-avenue)',
-            }}
-          >
-            {EVERY_DETAIL_MATTERS_CONSTANTS.title}
-          </h2>
-          <div className="w-full hidden lg:block h-[3px] bg-[#C9A961] flex-1" />
-        </motion.div>
+          {EVERY_DETAIL_MATTERS_CONSTANTS.title}
+        </h2>
+        <div className="w-full hidden lg:block h-[3px] bg-[#C9A961] flex-1" />
+      </motion.div>
       <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12 xl:px-16">
-        
-
         {/* Main content with image and text */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-start">
           {/* Image Div */}
-          <motion.div 
+          <motion.div
             className="order-1 lg:order-1"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -56,24 +57,24 @@ export default function EveryDetailMatters() {
           </motion.div>
 
           {/* Content Div */}
-          <motion.div 
+          <motion.div
             className="order-2 lg:order-2"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: false }}
           >
-            <h3 
+            <h3
               className="text-3xl lg:text-4xl font-normal leading-tight mb-6 md:mb-8 whitespace-pre-line text-center lg:text-left"
-              style={{ 
-                fontFamily: 'var(--font-spartan)',
-                fontWeight: '300',
-                color: '#523329'
+              style={{
+                fontFamily: "var(--font-spartan)",
+                fontWeight: "300",
+                color: "#523329",
               }}
             >
               {EVERY_DETAIL_MATTERS_CONSTANTS.mainTitle}
             </h3>
-            
+
             <ul className=" mb-8 md:mb-10 lg:pl-8 pl-8">
               {EVERY_DETAIL_MATTERS_CONSTANTS.services.map((service, index) => (
                 <motion.li
@@ -83,10 +84,10 @@ export default function EveryDetailMatters() {
                   whileInView={{ opacity: 1 }}
                   transition={{ duration: 0.4, delay: index * 0.05 }}
                   viewport={{ once: false }}
-                  style={{ 
-                    fontFamily: 'var(--font-spartan)',
-                    fontWeight: '300',
-                    color: '#523329'
+                  style={{
+                    fontFamily: "var(--font-spartan)",
+                    fontWeight: "300",
+                    color: "#523329",
                   }}
                 >
                   <span className="w-1 h-1 md:w-1 md:h-1 bg-[#5C4B3A] rounded-full mr-3 md:mr-4 mt-2 flex-shrink-0" />
@@ -94,7 +95,7 @@ export default function EveryDetailMatters() {
                 </motion.li>
               ))}
             </ul>
-            
+
             {/* Button */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -103,15 +104,14 @@ export default function EveryDetailMatters() {
               viewport={{ once: false }}
               className="mt-6 text-center lg:text-right"
             >
-              <Button 
+              <Button
                 text={EVERY_DETAIL_MATTERS_CONSTANTS.button.text}
                 bg="bg-[#B47801]"
                 hover="hover:bg-[#ad7301]"
                 className="px-6 py-3 text-sm font-semibold uppercase tracking-wide"
-                style={{ fontFamily: 'var(--font-cinzel)', fontWeight: '300' }}
+                style={{ fontFamily: "var(--font-cinzel)", fontWeight: "300" }}
               />
             </motion.div>
-            
           </motion.div>
         </div>
       </div>

@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { useState } from 'react';
-import WEDDING_PLANNING_CONSTANTS from '@/constants/weddingPlanning.json';
-import Button from '@/components/ui/Button';
-import ContactForm from '@/components/ui/ContactForm';
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { useState } from "react";
+import WEDDING_PLANNING_CONSTANTS from "@/constants/weddingPlanning.json";
+import Button from "@/components/ui/Button";
+import ContactForm from "@/components/ui/ContactForm";
 
 export default function WeddingPlanning() {
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   const handleFormSuccess = () => {
     setIsFormOpen(false);
-    alert('Thank you! We will connect you with an expert soon.');
+    alert("Thank you! We will connect you with an expert soon.");
   };
 
   return (
     <section className="min-h-screen flex flex-col lg:flex-row">
       {/* Image Section - Mobile Top, Desktop Right */}
-      <motion.div 
+      <motion.div
         className="lg:w-1/2 relative h-[328px] lg:h-auto lg:order-2"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -41,12 +41,12 @@ export default function WeddingPlanning() {
             transition={{ duration: 0.6 }}
             viewport={{ once: false }}
           >
-            <Button 
+            <Button
               text="CONNECT WITH AN EXPERT"
-              bg='bg-[#523329]'
-              hover='hover:bg-[#442c24]'
-              className="px-8 py-3 text-sm font-normal" 
-              style={{ fontFamily: 'var(--font-cinzel)', fontWeight: '300' }}
+              bg="bg-[#523329]"
+              hover="hover:bg-[#442c24]"
+              className="px-8 py-3 text-sm font-normal"
+              style={{ fontFamily: "var(--font-cinzel)", fontWeight: "300" }}
               onClick={() => setIsFormOpen(true)}
             />
           </motion.div>
@@ -54,10 +54,11 @@ export default function WeddingPlanning() {
       </motion.div>
 
       {/* Content Section - Mobile Bottom, Desktop Left */}
-      <div 
+      <div
         className="lg:w-1/2 px-8 lg:px-18 py-12 lg:py-18 flex flex-col justify-center lg:order-1"
         style={{
-          background: 'linear-gradient(180deg, rgba(184, 187, 176, 1) 0%, rgba(255, 255, 255, 1) 100%)'
+          background:
+            "linear-gradient(180deg, rgba(184, 187, 176, 1) 0%, rgba(255, 255, 255, 1) 100%)",
         }}
       >
         <div className="max-w-lg mx-auto">
@@ -69,15 +70,15 @@ export default function WeddingPlanning() {
             viewport={{ once: false }}
             className="text-center mb-12 lg:text-left"
           >
-            <motion.h2 
+            <motion.h2
               className="text-4xl md:text-5xl lg:text-6xl font-serif text-[#523329] leading-tight"
-              style={{ fontFamily: 'var(--font-dream-avenue)' }}
+              style={{ fontFamily: "var(--font-dream-avenue)" }}
             >
               {WEDDING_PLANNING_CONSTANTS.title.line1}
             </motion.h2>
-            <motion.h2 
+            <motion.h2
               className="text-3xl md:text-4xl lg:text-5xl font-serif text-[#523329] leading-tight"
-              style={{ fontFamily: 'var(--font-dream-avenue)' }}
+              style={{ fontFamily: "var(--font-dream-avenue)" }}
             >
               {WEDDING_PLANNING_CONSTANTS.title.line2}
             </motion.h2>
@@ -87,44 +88,53 @@ export default function WeddingPlanning() {
           <div className="relative mb-12">
             {/* Main Vertical Line */}
             <div className="absolute left-0 -top-4 bottom-0 flex flex-col items-center">
-                <Image
-                  src="/assets/wedding.svg"
-                  alt="timeline start"
-                  width={12}
-                  height={8}
-                  className="mb-2"
-                />
+              <Image
+                src="/assets/wedding.svg"
+                alt="timeline start"
+                width={12}
+                height={8}
+                className="mb-2"
+              />
             </div>
-            
-              {WEDDING_PLANNING_CONSTANTS.features.map((feature, index) => (
-                <motion.div
-                  key={feature.id}
-                  className="relative flex items-start pl-16 mb-8 pt-4"
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.2 }}
-                  viewport={{ once: false }}
-                >
-                  {/* Horizontal Arrow extending from vertical line */}
-                  <Image
-                    src="/assets/wedding_right_arrow.svg"
-                    alt="timeline arrow"
-                    width={48}
-                    height={20}
-                    className="absolute left-2 top-7 lg:top-8"
-                  />
-                  
-                  {/* Content */}
-                  <div className="flex-1">
-                    <h3 className="text-2xl lg:text-4xl font-light text-[#523329] mb-2" style={{ fontFamily: 'var(--font-spartan)', fontWeight: '300' }}>
-                      {feature.title}
-                    </h3>
-                    <p className="text-[#691A00] text-sm lg:text-xl leading-relaxed" style={{ fontFamily: 'var(--font-montserrat)' }}>
-                      {feature.description}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
+
+            {WEDDING_PLANNING_CONSTANTS.features.map((feature, index) => (
+              <motion.div
+                key={feature.id}
+                className="relative flex items-start pl-16 mb-8 pt-4"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.2 }}
+                viewport={{ once: false }}
+              >
+                {/* Horizontal Arrow extending from vertical line */}
+                <Image
+                  src="/assets/wedding_right_arrow.svg"
+                  alt="timeline arrow"
+                  width={48}
+                  height={20}
+                  className="absolute left-2 top-7 lg:top-8"
+                />
+
+                {/* Content */}
+                <div className="flex-1">
+                  <h3
+                    className="text-2xl lg:text-4xl font-light text-[#523329] mb-2"
+                    style={{
+                      fontFamily: "var(--font-spartan)",
+                      fontWeight: "300",
+                    }}
+                  >
+                    {feature.title}
+                  </h3>
+                  <p
+                    className="text-[#691A00] text-sm lg:text-xl leading-relaxed"
+                    style={{ fontFamily: "var(--font-montserrat)" }}
+                  >
+                    {feature.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
           </div>
 
           {/* Button for Mobile - Below Content */}
@@ -135,12 +145,12 @@ export default function WeddingPlanning() {
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: false }}
             >
-              <Button 
+              <Button
                 text="CONNECT WITH AN EXPERT"
-                bg='bg-[#523329]'
-                hover='hover:bg-[#442c24]'
+                bg="bg-[#523329]"
+                hover="hover:bg-[#442c24]"
                 className="px-8 py-3 text-sm font-normal"
-                style={{ fontFamily: 'var(--font-cinzel)', fontWeight: '300' }}
+                style={{ fontFamily: "var(--font-cinzel)", fontWeight: "300" }}
                 onClick={() => setIsFormOpen(true)}
               />
             </motion.div>
