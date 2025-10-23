@@ -17,6 +17,8 @@ export default function HowItWorks() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const [scrollLocked, setScrollLocked] = useState(false);
+  const scrollCountRef = useRef(0);
+  const isExitingRef = useRef(false);
 
   // Track current breakpoint
   useEffect(() => {
@@ -57,41 +59,76 @@ export default function HowItWorks() {
   // Handle sticky scroll behavior
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
-      if (!containerRef.current || !isSticky || scrollLocked) return;
+      if (!containerRef.current || !isSticky) return;
 
       const container = containerRef.current;
       const rect = container.getBoundingClientRect();
-      const isScrollingDown = e.deltaY > 0;
 
-      // Only handle wheel events when section is sticky
-      if (rect.top <= 0 && rect.bottom >= window.innerHeight) {
+      // Check if section is visible
+      const inView = rect.top <= 50 && rect.bottom >= 50;
+
+      if (inView) {
         e.preventDefault();
-        setScrollLocked(true);
 
-        if (isScrollingDown) {
-          // Scrolling down: 0 -> 1 -> 2 -> unlock
-          if (activeStep < 2) {
-            setActiveStep((prev) => prev + 1);
+        if (scrollLocked) return;
+
+        const isScrollingDown = e.deltaY > 0;
+        scrollCountRef.current++;
+
+        // Require 10 scroll events before transitioning (works well with trackpads)
+        if (scrollCountRef.current >= 10) {
+          scrollCountRef.current = 0;
+          setScrollLocked(true);
+
+          if (isScrollingDown) {
+            // Scrolling down: 0 -> 1 -> 2 -> unlock
+            if (activeStep < 2) {
+              setActiveStep((prev) => prev + 1);
+            } else {
+              // On step 2, unlock and allow scroll to next section
+              isExitingRef.current = true;
+              setIsSticky(false);
+              setActiveStep(0);
+
+              // Programmatically scroll past the section
+              if (containerRef.current) {
+                const rect = containerRef.current.getBoundingClientRect();
+                const scrollAmount = rect.bottom + 100; // Scroll well past the section
+                window.scrollBy({ top: scrollAmount, behavior: "smooth" });
+              }
+
+              // Keep exit mode active longer to prevent re-capture
+              setTimeout(() => {
+                isExitingRef.current = false;
+              }, 3000);
+            }
           } else {
-            // On step 2, unlock and allow scroll to next section
-            setIsSticky(false);
-            setActiveStep(0);
-            window.scrollBy({ top: 100, behavior: "smooth" });
+            // Scrolling up: 2 -> 1 -> 0 -> unlock
+            if (activeStep > 0) {
+              setActiveStep((prev) => prev - 1);
+            } else {
+              // On step 0, unlock and allow scroll to previous section
+              isExitingRef.current = true;
+              setIsSticky(false);
+              setActiveStep(0);
+
+              // Programmatically scroll past the section (upward)
+              if (containerRef.current) {
+                const rect = containerRef.current.getBoundingClientRect();
+                const scrollAmount = rect.top - 100; // Scroll well above the section
+                window.scrollBy({ top: scrollAmount, behavior: "smooth" });
+              }
+
+              // Keep exit mode active longer to prevent re-capture
+              setTimeout(() => {
+                isExitingRef.current = false;
+              }, 3000);
+            }
           }
-        } else {
-          // Scrolling up: 2 -> 1 -> 0 -> unlock
-          if (activeStep > 0) {
-            setActiveStep((prev) => prev - 1);
-          } else {
-            // On step 0, unlock and allow scroll to previous section
-            setIsSticky(false);
-            setActiveStep(0);
-            window.scrollBy({ top: -100, behavior: "smooth" });
-          }
+
+          // Unlock after animation
+          setTimeout(() => setScrollLocked(false), 800);
         }
-
-        // Unlock after animation
-        setTimeout(() => setScrollLocked(false), 1200);
       }
     };
 
@@ -101,15 +138,24 @@ export default function HowItWorks() {
       const container = containerRef.current;
       const rect = container.getBoundingClientRect();
 
-      // Activate sticky when section reaches top
-      if (rect.top <= 0 && rect.bottom >= window.innerHeight && !isSticky) {
+      // Activate sticky when section is near the top and visible
+      // Works for sections shorter than viewport
+      // Don't re-engage if we're exiting
+      if (
+        rect.top <= 50 &&
+        rect.bottom >= 200 &&
+        !isSticky &&
+        !isExitingRef.current
+      ) {
         setIsSticky(true);
         setActiveStep(0);
+        scrollCountRef.current = 0;
       }
 
-      // Deactivate sticky when scrolling away
-      if ((rect.bottom < window.innerHeight || rect.top > 0) && isSticky) {
+      // Deactivate sticky when scrolling far away
+      if ((rect.bottom < 100 || rect.top > 100) && isSticky) {
         setIsSticky(false);
+        scrollCountRef.current = 0;
       }
     };
 
