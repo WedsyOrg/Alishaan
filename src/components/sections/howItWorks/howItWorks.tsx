@@ -19,6 +19,8 @@ export default function HowItWorks() {
   const [scrollLocked, setScrollLocked] = useState(false);
   const scrollCountRef = useRef(0);
   const isExitingRef = useRef(false);
+  const lastScrollYRef = useRef(0);
+  const scrollDirectionRef = useRef<"up" | "down" | null>(null);
 
   // Track current breakpoint
   useEffect(() => {
@@ -73,6 +75,10 @@ export default function HowItWorks() {
         if (scrollLocked) return;
 
         const isScrollingDown = e.deltaY > 0;
+
+        // Update scroll direction based on wheel
+        scrollDirectionRef.current = isScrollingDown ? "down" : "up";
+
         scrollCountRef.current++;
 
         // Require 10 scroll events before transitioning (works well with trackpads)
@@ -115,14 +121,15 @@ export default function HowItWorks() {
               // Programmatically scroll past the section (upward)
               if (containerRef.current) {
                 const rect = containerRef.current.getBoundingClientRect();
-                const scrollAmount = rect.top - 100; // Scroll well above the section
+                // Scroll well above the section to ensure we're past it
+                const scrollAmount = -(rect.top + window.innerHeight);
                 window.scrollBy({ top: scrollAmount, behavior: "smooth" });
               }
 
               // Keep exit mode active longer to prevent re-capture
               setTimeout(() => {
                 isExitingRef.current = false;
-              }, 3000);
+              }, 4000); // Longer timeout for upward scroll
             }
           }
 
@@ -137,6 +144,15 @@ export default function HowItWorks() {
 
       const container = containerRef.current;
       const rect = container.getBoundingClientRect();
+      const currentScrollY = window.scrollY;
+
+      // Track scroll direction
+      if (currentScrollY > lastScrollYRef.current) {
+        scrollDirectionRef.current = "down";
+      } else if (currentScrollY < lastScrollYRef.current) {
+        scrollDirectionRef.current = "up";
+      }
+      lastScrollYRef.current = currentScrollY;
 
       // Activate sticky when section is near the top and visible
       // Works for sections shorter than viewport
@@ -148,7 +164,11 @@ export default function HowItWorks() {
         !isExitingRef.current
       ) {
         setIsSticky(true);
-        setActiveStep(0);
+        // Determine initial step based on scroll direction
+        // If scrolling up (coming from bottom), start at step 2
+        // If scrolling down (coming from top), start at step 0
+        const initialStep = scrollDirectionRef.current === "up" ? 2 : 0;
+        setActiveStep(initialStep);
         scrollCountRef.current = 0;
       }
 
