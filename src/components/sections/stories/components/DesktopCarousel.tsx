@@ -12,7 +12,6 @@ interface DesktopCarouselProps {
 
 export default function DesktopCarousel({
   stories,
-  currentIndex,
 }: DesktopCarouselProps) {
   const [offset, setOffset] = useState(0);
 

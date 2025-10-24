@@ -313,7 +313,7 @@ export default function WeddingRequirement() {
                     </p>
                     <div className="grid grid-cols-3 gap-4">
                       {EXPLORE_DATES_CONSTANTS.form.budget.options.map(
-                        (option, index) => (
+                        (option) => (
                           <motion.button
                             key={option.value}
                             type="button"
@@ -645,7 +645,7 @@ export default function WeddingRequirement() {
                     </p>
                     <div className="grid grid-cols-3 gap-2">
                       {EXPLORE_DATES_CONSTANTS.form.budget.options.map(
-                        (option, index) => (
+                        (option) => (
                           <motion.button
                             key={option.value}
                             type="button"

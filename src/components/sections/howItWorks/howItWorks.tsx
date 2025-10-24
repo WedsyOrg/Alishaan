@@ -157,7 +157,6 @@ export default function HowItWorks() {
 
     // Mobile touch handlers - replicate exact wheel behavior
     let touchStartY = 0;
-    let touchEndY = 0;
     let touchCount = 0;
     let lastTouchY = 0;
 
