@@ -66,7 +66,7 @@ export default function ImageCarousel({
         aria-label="Previous image"
       >
         <Image
-          src="/assets/stories/icons/Left.png"
+          src="/assets/stories/icons/left.png"
           alt="Previous"
           width={30}
           height={40}
