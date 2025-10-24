@@ -151,6 +151,7 @@ export default function StoriesSection({
         subtitle="Share your details and we'll help you create your perfect wedding story"
         submitText="Start My Story"
         onSubmitSuccess={handleFormSuccess}
+        formType="stories"
       />
     </section>
   );

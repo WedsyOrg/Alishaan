@@ -16,54 +16,81 @@ export default function WeddingRequirement() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isDateDropdownOpen, setIsDateDropdownOpen] = useState(false);
-
-  const dateOptions = [
-    "Before 3 months",
-    "Between 3-6 months",
-    "Beyond 6 months",
-  ];
+  const [phoneError, setPhoneError] = useState("");
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    
+    // Clear phone error when user starts typing
+    if (field === 'phone' && phoneError) {
+      setPhoneError("");
+    }
+  };
+
+  const validatePhone = (phone: string) => {
+    const cleanPhone = phone.replace(/\D/g, '');
+    return cleanPhone.length === 10 && /^\d{10}$/.test(cleanPhone);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Basic validation
+    if (!formData.name.trim() || !formData.phone.trim()) {
+      alert("Please fill in all required fields (Name and Phone)");
+      return;
+    }
+    
+    // Validate phone number
+    if (formData.phone && !validatePhone(formData.phone)) {
+      setPhoneError("Phone number must be exactly 10 digits");
+      return;
+    }
+    
     setIsSubmitting(true);
 
     try {
       // Convert budget string to number (assuming it's in lakhs)
       const budgetMap: { [key: string]: number } = {
-        "1-3": 200000,
-        "3-5": 400000,
-        "5-10": 750000,
-        "10+": 1000000,
+        "5-10": 750000,    // 5-10 Lakhs
+        "10-15": 1250000,  // 10-15 Lakhs  
+        "20+": 2000000,    // Above 20 Lakhs
       };
+
+      // Get budget value with fallback
+      const budgetValue = budgetMap[selectedBudget] || 750000; // Default to 5-10 range
 
       const apiData = {
         name: formData.name,
-        phonenumber: formData.phone,
-        budget: budgetMap[selectedBudget],
+        phone: formData.phone,
+        budget: budgetValue,
         date: formData.date,
+        formType: 'wedding-requirements'
       };
 
-      const response = await axios.post(
-        "http://localhost:8090/contact-form/",
-        apiData,
+      // Create form data to avoid CORS issues
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', apiData.name || '');
+      formDataToSend.append('phone', apiData.phone || '');
+      formDataToSend.append('budget', apiData.budget.toString());
+      formDataToSend.append('date', apiData.date || '');
+      formDataToSend.append('formType', apiData.formType);
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SHEET_URL}`,
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
+          method: 'POST',
+          mode: 'no-cors',
+          body: formDataToSend
         }
       );
 
-      if (response.status === 200 || response.status === 201) {
-        console.log("Form submitted successfully:", response.data);
-        setIsSubmitted(true);
-        setFormData({ name: "", date: "", phone: "" });
-        setSelectedBudget("5-10");
-      }
+      // With no-cors mode, we can't check response status, so assume success
+      console.log("Form submitted successfully");
+      setIsSubmitted(true);
+      setFormData({ name: "", date: "", phone: "" });
+      setSelectedBudget("5-10");
+      setPhoneError("");
     } catch (error) {
       console.error("Error submitting form:", error);
       alert("Error submitting form. Please try again.");
@@ -256,43 +283,20 @@ export default function WeddingRequirement() {
                     whileInView={{ opacity: 1 }}
                     transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
                     viewport={{ once: false }}
-                    className="relative"
                   >
-                    <div
-                      onClick={() => setIsDateDropdownOpen(!isDateDropdownOpen)}
-                      className="w-full bg-transparent border-b-2 border-[#523329] py-3 text-[#523329] cursor-pointer transition-all duration-300 hover:border-[#6B3A1A]"
+                    <input
+                      type="text"
+                      placeholder="When is your special day? (e.g., 12/09/2025)"
+                      value={formData.date}
+                      onChange={(e) =>
+                        handleInputChange("date", e.target.value)
+                      }
+                      className="w-full bg-transparent border-b-2 border-[#523329] py-3 text-[#523329] placeholder-[#523329] focus:border-[#523329] focus:outline-none transition-all duration-300 hover:border-[#523329]"
                       style={{
                         fontFamily: "var(--font-spartan)",
                         fontWeight: "350",
                       }}
-                    >
-                      {formData.date || "When is your special day ?"}
-                    </div>
-                    {isDateDropdownOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute z-10 w-full mt-1 bg-white border border-[#523329] rounded-lg shadow-lg overflow-hidden"
-                      >
-                        {dateOptions.map((option) => (
-                          <div
-                            key={option}
-                            onClick={() => {
-                              handleInputChange("date", option);
-                              setIsDateDropdownOpen(false);
-                            }}
-                            className="px-4 py-3 hover:bg-[#523329]/10 cursor-pointer transition-colors duration-200 text-[#523329]"
-                            style={{
-                              fontFamily: "var(--font-spartan)",
-                              fontWeight: "350",
-                            }}
-                          >
-                            {option}
-                          </div>
-                        ))}
-                      </motion.div>
-                    )}
+                    />
                   </motion.div>
 
                   {/* Budget Selection */}
@@ -358,12 +362,19 @@ export default function WeddingRequirement() {
                       onChange={(e) =>
                         handleInputChange("phone", e.target.value)
                       }
-                      className="w-full bg-transparent border-b-2 border-[#523329] py-3 text-[#523329] placeholder-[#523329] focus:border-[#523329] focus:outline-none transition-all duration-300 hover:border-[#523329]"
+                      className={`w-full bg-transparent border-b-2 py-3 text-[#523329] placeholder-[#523329] focus:outline-none transition-all duration-300 ${
+                        phoneError ? 'border-red-500' : 'border-[#523329] focus:border-[#523329] hover:border-[#523329]'
+                      }`}
                       style={{
                         fontFamily: "var(--font-spartan)",
                         fontWeight: "350",
                       }}
                     />
+                    {phoneError && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {phoneError}
+                      </p>
+                    )}
                   </motion.div>
 
                   {/* Submit Button */}
@@ -588,43 +599,20 @@ export default function WeddingRequirement() {
                     whileInView={{ opacity: 1 }}
                     transition={{ duration: 0.5, ease: "easeOut", delay: 1.2 }}
                     viewport={{ once: false }}
-                    className="relative"
                   >
-                    <div
-                      onClick={() => setIsDateDropdownOpen(!isDateDropdownOpen)}
-                      className="w-full bg-transparent border-b-2 border-[#000000] py-2 text-[#000000] text-lg text-center cursor-pointer transition-all duration-300 hover:border-[#000000]"
+                    <input
+                      type="text"
+                      placeholder="When is your special day? (e.g., 12/09/2025)"
+                      value={formData.date}
+                      onChange={(e) =>
+                        handleInputChange("date", e.target.value)
+                      }
+                      className="w-full bg-transparent border-b-2 border-[#000000] py-2 text-[#000000] placeholder-[#000000] text-lg text-center focus:border-[#000000] focus:outline-none transition-all duration-300 hover:border-[#000000]"
                       style={{
                         fontFamily: "var(--font-spartan)",
                         fontWeight: "350",
                       }}
-                    >
-                      {formData.date || "When is your special day ?"}
-                    </div>
-                    {isDateDropdownOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute z-10 w-full mt-1 bg-white border border-[#000000] rounded-lg shadow-lg overflow-hidden"
-                      >
-                        {dateOptions.map((option) => (
-                          <div
-                            key={option}
-                            onClick={() => {
-                              handleInputChange("date", option);
-                              setIsDateDropdownOpen(false);
-                            }}
-                            className="px-4 py-3 hover:bg-[#000000]/10 cursor-pointer transition-colors duration-200 text-[#000000] text-center"
-                            style={{
-                              fontFamily: "var(--font-spartan)",
-                              fontWeight: "350",
-                            }}
-                          >
-                            {option}
-                          </div>
-                        ))}
-                      </motion.div>
-                    )}
+                    />
                   </motion.div>
 
                   {/* Budget Selection */}
@@ -690,12 +678,19 @@ export default function WeddingRequirement() {
                       onChange={(e) =>
                         handleInputChange("phone", e.target.value)
                       }
-                      className="w-full bg-transparent border-b-2 border-[#000000] py-2 text-[#000000] placeholder-[#000000] text-lg text-center focus:border-[#000000] focus:outline-none transition-all duration-300 hover:border-[#000000]"
+                      className={`w-full bg-transparent border-b-2 py-2 text-[#000000] placeholder-[#000000] text-lg text-center focus:outline-none transition-all duration-300 ${
+                        phoneError ? 'border-red-500' : 'border-[#000000] focus:border-[#000000] hover:border-[#000000]'
+                      }`}
                       style={{
                         fontFamily: "var(--font-spartan)",
                         fontWeight: "350",
                       }}
                     />
+                    {phoneError && (
+                      <p className="text-red-500 text-xs mt-1 text-center">
+                        {phoneError}
+                      </p>
+                    )}
                   </motion.div>
 
                   {/* Submit Button */}
@@ -756,7 +751,7 @@ export default function WeddingRequirement() {
             </motion.div>
           </motion.div>
         </div>
-      </div>
+    </div>
     </section>
   );
 }

@@ -10,6 +10,7 @@ interface ContactFormProps {
   subtitle?: string;
   submitText?: string;
   onSubmitSuccess?: () => void;
+  formType?: string;
 }
 
 export default function ContactForm({
@@ -19,37 +20,59 @@ export default function ContactForm({
   subtitle,
   submitText = "Submit",
   onSubmitSuccess,
+  formType = "contact",
 }: ContactFormProps) {
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [phoneError, setPhoneError] = useState("");
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    
+    // Clear phone error when user starts typing
+    if (field === 'phone' && phoneError) {
+      setPhoneError("");
+    }
+  };
+
+  const validatePhone = (phone: string) => {
+    const cleanPhone = phone.replace(/\D/g, '');
+    return cleanPhone.length === 10 && /^\d{10}$/.test(cleanPhone);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate phone number
+    if (formData.phone && !validatePhone(formData.phone)) {
+      setPhoneError("Phone number must be exactly 10 digits");
+      return;
+    }
+    
     setIsSubmitting(true);
 
     try {
-      const response = await axios.post("http://localhost:8090/contact-form/", {
-        name: formData.name,
-        phone: formData.phone,
-        email: "", // Default empty email
-        budget: 0, // Default budget
-        guestCount: 0, // Default guest count
-        eventDate: "", // Default empty date
-        venue: "", // Default empty venue
-        additionalInfo: "", // Default empty additional info
+      // Create form data
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('phone', formData.phone);
+      formDataToSend.append('formType', formType);
+
+      // Use fetch with FormData to avoid CORS issues
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SHEET_URL}`, {
+        method: 'POST',
+        mode: 'no-cors', // This bypasses CORS
+        body: formDataToSend
       });
 
-      console.log("Form submitted successfully:", response.data);
+      console.log("Form submitted successfully");
 
       // Reset form
       setFormData({ name: "", phone: "" });
+      setPhoneError("");
 
       // Call success callback if provided
       if (onSubmitSuccess) {
@@ -141,10 +164,17 @@ export default function ContactForm({
                       onChange={(e) =>
                         handleInputChange("phone", e.target.value)
                       }
-                      className="w-full bg-transparent border-b border-gray-300 py-2 text-[#3C2415] placeholder-gray-500 text-sm focus:border-gray-500 focus:outline-none transition-colors text-center"
+                      className={`w-full bg-transparent border-b py-2 text-[#3C2415] placeholder-gray-500 text-sm focus:outline-none transition-colors text-center ${
+                        phoneError ? 'border-red-500' : 'border-gray-300 focus:border-gray-500'
+                      }`}
                       style={{ fontFamily: "var(--font-spartan)" }}
                       required
                     />
+                    {phoneError && (
+                      <p className="text-red-500 text-xs mt-1 text-center">
+                        {phoneError}
+                      </p>
+                    )}
                   </div>
 
                   {/* Submit Button */}

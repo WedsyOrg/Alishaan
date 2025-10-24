@@ -166,6 +166,7 @@ export default function WeddingPlanning() {
         subtitle="Share your details and we'll connect you with our wedding planning experts"
         submitText="Connect Now"
         onSubmitSuccess={handleFormSuccess}
+        formType="wedding planning"
       />
     </section>
   );

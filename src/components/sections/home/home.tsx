@@ -271,6 +271,7 @@ export default function Homepage() {
         subtitle="Fill in your details and we'll get back to you"
         submitText="Get Consultation"
         onSubmitSuccess={handleFormSuccess}
+        formType="get free consultation"
       />
     </section>
   );

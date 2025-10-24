@@ -15,6 +15,7 @@ export default function HowItWorks() {
     phone: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [phoneError, setPhoneError] = useState("");
   const [isSticky, setIsSticky] = useState(false);
   const [scrollLocked, setScrollLocked] = useState(false);
   const scrollCountRef = useRef(0);
@@ -316,38 +317,58 @@ export default function HowItWorks() {
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    
+    // Clear phone error when user starts typing
+    if (field === 'phone' && phoneError) {
+      setPhoneError("");
+    }
+  };
+
+  const validatePhone = (phone: string) => {
+    const cleanPhone = phone.replace(/\D/g, '');
+    return cleanPhone.length === 10 && /^\d{10}$/.test(cleanPhone);
   };
 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate phone number
+    if (formData.phone && !validatePhone(formData.phone)) {
+      setPhoneError("Phone number must be exactly 10 digits");
+      return;
+    }
+    
     setIsSubmitting(true);
 
     try {
       const apiData = {
         name: formData.name,
-        phonenumber: formData.phone,
-        email: "not-provided@example.com", // Default email since not collected
-        budget: 500000, // Default budget
-        date: new Date().toISOString().split("T")[0], // Today's date
+        phone: formData.phone,
+        formType: 'how-it-works'
       };
 
-      const response = await axios.post(
-        "http://localhost:8090/contact-form/",
-        apiData,
+      // Create form data to avoid CORS issues
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', apiData.name);
+      formDataToSend.append('phone', apiData.phone);
+      formDataToSend.append('formType', apiData.formType);
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SHEET_URL}`,
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
+          method: 'POST',
+          mode: 'no-cors',
+          body: formDataToSend
         }
       );
 
-      if (response.status === 200 || response.status === 201) {
-        console.log("Form submitted successfully:", response.data);
-        alert("Thank you! We will contact you soon.");
-        // Reset form
-        setFormData({ name: "", phone: "" });
-      }
+      // With no-cors mode, we can't check response status, so assume success
+      console.log("Form submitted successfully");
+      alert("Thank you! We will contact you soon.");
+      // Reset form
+      setFormData({ name: "", phone: "" });
+      setPhoneError("");
     } catch (error) {
       console.error("Error submitting form:", error);
       alert("Error submitting form. Please try again.");
@@ -470,10 +491,17 @@ export default function HowItWorks() {
                         onChange={(e) =>
                           handleInputChange("phone", e.target.value)
                         }
-                        className="w-full bg-transparent border-b border-gray-300 py-2 text-[#3C2415] placeholder-gray-500 text-sm focus:border-gray-500 focus:outline-none transition-colors text-center"
+                        className={`w-full bg-transparent border-b py-2 text-[#3C2415] placeholder-gray-500 text-sm focus:outline-none transition-colors text-center ${
+                          phoneError ? 'border-red-500' : 'border-gray-300 focus:border-gray-500'
+                        }`}
                         style={{ fontFamily: "var(--font-spartan)" }}
                         required
                       />
+                      {phoneError && (
+                        <p className="text-red-500 text-xs mt-1 text-center">
+                          {phoneError}
+                        </p>
+                      )}
                     </div>
 
                     {/* Submit Button */}
