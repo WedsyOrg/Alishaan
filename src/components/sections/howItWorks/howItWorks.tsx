@@ -21,11 +21,17 @@ export default function HowItWorks() {
   const isExitingRef = useRef(false);
   const lastScrollYRef = useRef(0);
   const scrollDirectionRef = useRef<"up" | "down" | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [arrowsAnimated, setArrowsAnimated] = useState(false);
 
-  // Track current breakpoint
+  // Track current breakpoint and mobile detection
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
+      const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || width < 768;
+      
+      setIsMobile(isMobileDevice);
+      
       if (width >= 1024) {
         // lg breakpoint
         setCurrentBreakpoint("lg");
@@ -44,6 +50,16 @@ export default function HowItWorks() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Trigger arrow animation when section becomes sticky (mobile fallback)
+  useEffect(() => {
+    if (isSticky && !arrowsAnimated) {
+      const timer = setTimeout(() => {
+        setArrowsAnimated(true);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isSticky, arrowsAnimated]);
 
   // Helper function to get responsive font size
   const getFontSize = useCallback((isActive: boolean, breakpoint: string) => {
@@ -139,6 +155,111 @@ export default function HowItWorks() {
       }
     };
 
+    // Mobile touch handlers - replicate exact wheel behavior
+    let touchStartY = 0;
+    let touchEndY = 0;
+    let touchCount = 0;
+    let lastTouchY = 0;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (!containerRef.current || !isSticky) return;
+      
+      const container = containerRef.current;
+      const rect = container.getBoundingClientRect();
+      const inView = rect.top <= 50 && rect.bottom >= 50;
+      
+      if (inView) {
+        touchStartY = e.touches[0].clientY;
+        lastTouchY = touchStartY;
+        touchCount = 0;
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!containerRef.current || !isSticky) return;
+      
+      const container = containerRef.current;
+      const rect = container.getBoundingClientRect();
+      const inView = rect.top <= 50 && rect.bottom >= 50;
+      
+      if (inView) {
+        e.preventDefault();
+        
+        const currentTouchY = e.touches[0].clientY;
+        const deltaY = lastTouchY - currentTouchY;
+        
+        // Only process if there's significant movement
+        if (Math.abs(deltaY) > 3) {
+          touchCount++;
+          lastTouchY = currentTouchY;
+          
+          // Require fewer touch moves for smoother mobile experience
+          if (touchCount >= 5) {
+            touchCount = 0;
+            
+            if (scrollLocked) return;
+            
+            // Fix swipe direction: swipe down (deltaY > 0) = scroll down, swipe up (deltaY < 0) = scroll up
+            const isScrollingDown = deltaY > 0;
+            scrollDirectionRef.current = isScrollingDown ? "down" : "up";
+            
+            
+            setScrollLocked(true);
+            
+            if (isScrollingDown) {
+              // Scrolling down: 0 -> 1 -> 2 -> unlock
+              if (activeStep < 2) {
+                setActiveStep((prev) => prev + 1);
+              } else {
+                // On step 2, unlock and allow scroll to next section
+                isExitingRef.current = true;
+                setIsSticky(false);
+                setActiveStep(0);
+
+                // Programmatically scroll past the section
+                if (containerRef.current) {
+                  const rect = containerRef.current.getBoundingClientRect();
+                  const scrollAmount = rect.bottom + 100; // Scroll well past the section
+                  window.scrollBy({ top: scrollAmount, behavior: "smooth" });
+                }
+
+                // Keep exit mode active longer to prevent re-capture
+                setTimeout(() => {
+                  isExitingRef.current = false;
+                }, 3000);
+              }
+            } else {
+              // Scrolling up: 2 -> 1 -> 0 -> unlock
+              if (activeStep > 0) {
+                setActiveStep((prev) => prev - 1);
+              } else {
+                // On step 0, unlock and allow scroll to previous section
+                isExitingRef.current = true;
+                setIsSticky(false);
+                setActiveStep(0);
+
+                // Programmatically scroll past the section (upward)
+                if (containerRef.current) {
+                  const rect = containerRef.current.getBoundingClientRect();
+                  // Scroll well above the section to ensure we're past it
+                  const scrollAmount = -(rect.top + window.innerHeight);
+                  window.scrollBy({ top: scrollAmount, behavior: "smooth" });
+                }
+
+                // Keep exit mode active longer to prevent re-capture
+                setTimeout(() => {
+                  isExitingRef.current = false;
+                }, 4000); // Longer timeout for upward scroll
+              }
+            }
+
+            // Unlock after animation - faster for mobile
+            setTimeout(() => setScrollLocked(false), 400);
+          }
+        }
+      }
+    };
+
     const handleScroll = () => {
       if (!containerRef.current) return;
 
@@ -181,16 +302,23 @@ export default function HowItWorks() {
 
     window.addEventListener("wheel", handleWheel, { passive: false });
     window.addEventListener("scroll", handleScroll, { passive: true });
+    
+    // Add touch event listeners for mobile
+    window.addEventListener("touchstart", handleTouchStart, { passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
 
     return () => {
       window.removeEventListener("wheel", handleWheel);
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
     };
   }, [activeStep, isSticky, scrollLocked]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -245,9 +373,10 @@ export default function HowItWorks() {
           <motion.div
             className="flex-1 relative flex justify-end"
             initial={{ opacity: 0, x: -100 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            animate={isMobile ? (arrowsAnimated ? { opacity: 1, x: 0 } : { opacity: 0, x: -100 }) : {}}
+            whileInView={!isMobile ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            viewport={{ once: false }}
+            viewport={{ once: false, margin: "-50px" }}
           >
             <Image
               src="/assets/left.svg"
@@ -266,18 +395,20 @@ export default function HowItWorks() {
               fontStyle: "normal",
             }}
             initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={isMobile ? (arrowsAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }) : {}}
+            whileInView={!isMobile ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            viewport={{ once: false }}
+            viewport={{ once: false, margin: "-50px" }}
           >
             {HOW_IT_WORKS_CONSTANTS.title}
           </motion.h1>
           <motion.div
             className="flex-1 relative flex justify-start"
             initial={{ opacity: 0, x: 100 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            animate={isMobile ? (arrowsAnimated ? { opacity: 1, x: 0 } : { opacity: 0, x: 100 }) : {}}
+            whileInView={!isMobile ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            viewport={{ once: false }}
+            viewport={{ once: false, margin: "-50px" }}
           >
             <Image
               src="/assets/right.svg"
@@ -288,6 +419,7 @@ export default function HowItWorks() {
             />
           </motion.div>
         </div>
+
 
         {/* Content Section */}
         <div className="lg:px-20 px-6 flex flex-col md:flex-row bg-[#F4F4F4] pb-12">
@@ -362,7 +494,7 @@ export default function HowItWorks() {
                   key={activeStep}
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
                   className="relative w-full max-w-[200px] md:max-w-[320px] h-full flex items-center justify-center"
                 >
                   <div className="relative w-full aspect-[3/4]">
@@ -399,7 +531,7 @@ export default function HowItWorks() {
                         key={step.id}
                         className="flex items-center space-x-5 relative gap-3"
                         animate={{ opacity: isActive ? 1 : 0.7 }}
-                        transition={{ duration: 0.5, ease: "easeInOut" }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
                       >
                         {/* Timeline Circle */}
                         <div className="flex items-center relative z-10">
@@ -410,7 +542,7 @@ export default function HowItWorks() {
                               scale: isActive ? 1.05 : 1,
                               borderColor: isActive ? "#7C2D12" : "#6c6f74",
                             }}
-                            transition={{ duration: 0.5, ease: "easeInOut" }}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
                             style={{
                               width: isActive ? 54 : 48,
                               height: isActive ? 54 : 48,
@@ -438,7 +570,7 @@ export default function HowItWorks() {
                                 currentBreakpoint
                               ),
                             }}
-                            transition={{ duration: 0.5, ease: "easeInOut" }}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
                           >
                             {step.title}
                           </motion.h3>
@@ -451,7 +583,7 @@ export default function HowItWorks() {
                                 height: "auto",
                               }}
                               exit={{ opacity: 0, height: 0 }}
-                              transition={{ duration: 0.5, ease: "easeInOut" }}
+                              transition={{ duration: 0.3, ease: "easeInOut" }}
                               style={{ overflow: "hidden" }}
                             >
                               <p
