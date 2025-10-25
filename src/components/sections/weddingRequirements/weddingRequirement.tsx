@@ -17,7 +17,13 @@ export default function WeddingRequirement() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [phoneError, setPhoneError] = useState("");
+  const [isDateDropdownOpen, setIsDateDropdownOpen] = useState(false);
 
+  const dateOptions = [
+    "Before 3 months",
+    "Between 3-6 months",
+    "Beyond 6 months",
+  ];
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     
@@ -283,20 +289,43 @@ export default function WeddingRequirement() {
                     whileInView={{ opacity: 1 }}
                     transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
                     viewport={{ once: false }}
+                    className="relative"
                   >
-                    <input
-                      type="text"
-                      placeholder="When is your special day? (e.g., 12/09/2025)"
-                      value={formData.date}
-                      onChange={(e) =>
-                        handleInputChange("date", e.target.value)
-                      }
-                      className="w-full bg-transparent border-b-2 border-[#523329] py-3 text-[#523329] placeholder-[#523329] focus:border-[#523329] focus:outline-none transition-all duration-300 hover:border-[#523329]"
+                    <div
+                      onClick={() => setIsDateDropdownOpen(!isDateDropdownOpen)}
+                      className="w-full bg-transparent border-b-2 border-[#523329] py-3 text-[#523329] cursor-pointer transition-all duration-300 hover:border-[#6B3A1A]"
                       style={{
                         fontFamily: "var(--font-spartan)",
                         fontWeight: "350",
                       }}
-                    />
+                    >
+                      {formData.date || "When is your special day ?"}
+                    </div>
+                    {isDateDropdownOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute z-10 w-full mt-1 bg-white border border-[#523329] rounded-lg shadow-lg overflow-hidden"
+                      >
+                        {dateOptions.map((option) => (
+                          <div
+                            key={option}
+                            onClick={() => {
+                              handleInputChange("date", option);
+                              setIsDateDropdownOpen(false);
+                            }}
+                            className="px-4 py-3 hover:bg-[#523329]/10 cursor-pointer transition-colors duration-200 text-[#523329]"
+                            style={{
+                              fontFamily: "var(--font-spartan)",
+                              fontWeight: "350",
+                            }}
+                          >
+                            {option}
+                          </div>
+                        ))}
+                      </motion.div>
+                    )}
                   </motion.div>
 
                   {/* Budget Selection */}
@@ -599,20 +628,43 @@ export default function WeddingRequirement() {
                     whileInView={{ opacity: 1 }}
                     transition={{ duration: 0.5, ease: "easeOut", delay: 1.2 }}
                     viewport={{ once: false }}
+                    className="relative"
                   >
-                    <input
-                      type="text"
-                      placeholder="When is your special day? (e.g., 12/09/2025)"
-                      value={formData.date}
-                      onChange={(e) =>
-                        handleInputChange("date", e.target.value)
-                      }
-                      className="w-full bg-transparent border-b-2 border-[#000000] py-2 text-[#000000] placeholder-[#000000] text-lg text-center focus:border-[#000000] focus:outline-none transition-all duration-300 hover:border-[#000000]"
+                    <div
+                      onClick={() => setIsDateDropdownOpen(!isDateDropdownOpen)}
+                      className="w-full bg-transparent border-b-2 border-[#000000] py-2 text-[#000000] text-lg text-center cursor-pointer transition-all duration-300 hover:border-[#000000]"
                       style={{
                         fontFamily: "var(--font-spartan)",
                         fontWeight: "350",
                       }}
-                    />
+                    >
+                      {formData.date || "When is your special day ?"}
+                    </div>
+                    {isDateDropdownOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute z-10 w-full mt-1 bg-white border border-[#000000] rounded-lg shadow-lg overflow-hidden"
+                      >
+                        {dateOptions.map((option) => (
+                          <div
+                            key={option}
+                            onClick={() => {
+                              handleInputChange("date", option);
+                              setIsDateDropdownOpen(false);
+                            }}
+                            className="px-4 py-3 hover:bg-[#000000]/10 cursor-pointer transition-colors duration-200 text-[#000000] text-center"
+                            style={{
+                              fontFamily: "var(--font-spartan)",
+                              fontWeight: "350",
+                            }}
+                          >
+                            {option}
+                          </div>
+                        ))}
+                      </motion.div>
+                    )}
                   </motion.div>
 
                   {/* Budget Selection */}
