@@ -6,7 +6,7 @@ import { useState } from "react";
 import WEDDING_PLANNING_CONSTANTS from "@/constants/weddingPlanning.json";
 import Button from "@/components/ui/Button";
 import ContactForm from "@/components/ui/ContactForm";
-
+import { getImageUrl } from "@/utils/imageUtils";
 export default function WeddingPlanning() {
   const [isFormOpen, setIsFormOpen] = useState(false);
 
@@ -26,7 +26,7 @@ export default function WeddingPlanning() {
         viewport={{ once: false }}
       >
         <Image
-          src="/assets/desktop/wedding_planning.png"
+          src={getImageUrl("/assets/desktop/wedding_planning.png")}
           alt="Wedding planning"
           fill
           className="object-cover"
@@ -89,7 +89,7 @@ export default function WeddingPlanning() {
             {/* Main Vertical Line */}
             <div className="absolute left-0 -top-4 bottom-0 flex flex-col items-center">
               <Image
-                src="/assets/wedding.svg"
+                src={getImageUrl("/assets/wedding.svg")}
                 alt="timeline start"
                 width={12}
                 height={8}
@@ -108,7 +108,7 @@ export default function WeddingPlanning() {
               >
                 {/* Horizontal Arrow extending from vertical line */}
                 <Image
-                  src="/assets/wedding_right_arrow.svg"
+                  src={getImageUrl("/assets/wedding_right_arrow.svg")}
                   alt="timeline arrow"
                   width={48}
                   height={20}

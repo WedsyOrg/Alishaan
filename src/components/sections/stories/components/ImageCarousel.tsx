@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { StoryImage } from "../stories-data";
-
+import { getImageUrl } from "@/utils/imageUtils";
 interface ImageCarouselProps {
   stories: StoryImage[];
   currentIndex: number;
@@ -66,7 +66,7 @@ export default function ImageCarousel({
         aria-label="Previous image"
       >
         <Image
-          src="/assets/stories/icons/left.png"
+          src={getImageUrl("/assets/stories/icons/left.png")}
           alt="Previous"
           width={30}
           height={40}
@@ -81,7 +81,7 @@ export default function ImageCarousel({
           className="absolute inset-0 rounded-inherit overflow-hidden"
         >
           <Image
-            src={currentStory.mainImage}
+            src={getImageUrl(currentStory.mainImage)}
             alt={`Wedding story ${currentStory.id}`}
             fill
             className="object-cover"
@@ -117,7 +117,7 @@ export default function ImageCarousel({
         aria-label="Next image"
       >
         <Image
-          src="/assets/stories/icons/Right.png"
+          src={getImageUrl("/assets/stories/icons/Right.png")}
           alt="Next"
           width={20}
           height={20}

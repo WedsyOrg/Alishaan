@@ -3,6 +3,7 @@
 import { ComponentProps } from "react";
 import Image from "next/image";
 import { allClientsData } from "./all-clients-data";
+import { getImageUrl } from "@/utils/imageUtils";
 
 interface AllClientsSectionProps extends ComponentProps<"section"> {
   isVisible?: boolean;
@@ -36,7 +37,7 @@ export default function AllClientsSection({
               className="flex-shrink-0 w-20 h-20 md:w-32 md:h-32 flex items-center justify-center"
             >
               <Image
-                src={client.image}
+                src={getImageUrl(client.image)}
                 alt={client.name}
                 width={160}
                 height={160}
@@ -53,7 +54,7 @@ export default function AllClientsSection({
               className="flex-shrink-0 w-20 h-20 md:w-32 md:h-32 flex items-center justify-center"
             >
               <Image
-                src={client.image}
+                src={getImageUrl(client.image)}
                 alt={client.name}
                 width={160}
                 height={160}

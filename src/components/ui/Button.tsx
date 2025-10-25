@@ -3,7 +3,7 @@
 
 import { ButtonHTMLAttributes, memo } from "react";
 import Image from "next/image";
-
+import { getImageUrl } from "@/utils/imageUtils";
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   text: string;
   bg?: string;
@@ -45,7 +45,7 @@ const Button = memo(function Button({
       <span className="whitespace-nowrap">{text}</span>
       {showArrow && (
         <Image
-          src="/assets/icons/Arrow.png"
+          src={getImageUrl("/assets/icons/Arrow.png")}
           alt="Arrow"
           width={16}
           height={16}

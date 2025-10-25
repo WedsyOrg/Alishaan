@@ -10,7 +10,6 @@ import Button from "../../ui/Button";
 import ContactForm from "../../ui/ContactForm";
 import { storiesData } from "./stories-data";
 import { motion } from "framer-motion";
-
 interface StoriesSectionProps extends ComponentProps<"section"> {
   isVisible?: boolean;
 }

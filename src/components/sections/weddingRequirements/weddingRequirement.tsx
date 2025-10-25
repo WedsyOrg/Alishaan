@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import EXPLORE_DATES_CONSTANTS from "@/constants/exploreDates.json";
 import Button from "@/components/ui/Button";
-
+import { getImageUrl } from "@/utils/imageUtils";
 export default function WeddingRequirement() {
   const [selectedBudget, setSelectedBudget] = useState("5-10");
   const [formData, setFormData] = useState({
@@ -112,7 +112,7 @@ export default function WeddingRequirement() {
         {/* Left Section - Image (2/3 width) */}
         <div className="w-2/3 relative">
           <Image
-            src="/assets/desktop/luxury_wedding.png"
+            src={getImageUrl("/assets/desktop/luxury_wedding.png")}
             alt="Wedding couple"
             fill
             className="object-cover"
@@ -145,7 +145,7 @@ export default function WeddingRequirement() {
                   viewport={{ once: false }}
                 >
                   <Image
-                    src="/assets/white-left.svg"
+                    src={getImageUrl("/assets/white-left.svg")}
                     alt="decoration"
                     width={123}
                     height={5}
@@ -172,7 +172,7 @@ export default function WeddingRequirement() {
                   viewport={{ once: false }}
                 >
                   <Image
-                    src="/assets/white-right.svg"
+                    src={getImageUrl("/assets/white-right.svg")}
                     alt="decoration"
                     width={123}
                     height={5}
@@ -471,7 +471,7 @@ export default function WeddingRequirement() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="/assets/desktop/luxury_wedding.png"
+            src={getImageUrl("/assets/desktop/luxury_wedding.png")}
             alt="Wedding couple"
             fill
             className="object-cover"
@@ -505,7 +505,7 @@ export default function WeddingRequirement() {
                 viewport={{ once: false }}
               >
                 <Image
-                  src="/assets/white-left.svg"
+                  src={getImageUrl("/assets/white-left.svg")}
                   alt="decoration"
                   width={103}
                   height={3}
@@ -532,7 +532,7 @@ export default function WeddingRequirement() {
                 viewport={{ once: false }}
               >
                 <Image
-                  src="/assets/white-right.svg"
+                  src={getImageUrl("/assets/white-right.svg")}
                   alt="decoration"
                   width={103}
                   height={3}

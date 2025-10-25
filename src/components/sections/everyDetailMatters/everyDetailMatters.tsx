@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import EVERY_DETAIL_MATTERS_CONSTANTS from "@/constants/everyDetailMatters.json";
 import Button from "@/components/ui/Button";
+import { getImageUrl } from "@/utils/imageUtils";
 
 export default function EveryDetailMatters() {
   return (
@@ -45,7 +46,7 @@ export default function EveryDetailMatters() {
             <div className="lg:rounded-[32px] bg-gradient-to-br from-[#B47801] to-[#B47801] p-4 md:p-5 inline-block w-full">
               <div className="relative lg:rounded-[24px] overflow-hidden w-full aspect-[4/3]">
                 <Image
-                  src="/assets/desktop/matter.png"
+                  src={getImageUrl("/assets/desktop/matter.png")}
                   alt="Wedding celebration"
                   fill
                   className="object-cover"

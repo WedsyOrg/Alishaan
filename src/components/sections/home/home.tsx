@@ -4,6 +4,7 @@ import ContactForm from "@/components/ui/ContactForm";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { getImageUrl } from "@/utils/imageUtils";
 
 // Counter component for rolling number animation
 function Counter({
@@ -83,7 +84,7 @@ export default function Homepage() {
       <div className="absolute inset-0 z-0">
         {/* Mobile Background */}
         <Image
-          src="/assets/homepage/homepage.png"
+          src={getImageUrl("/assets/homepage/homepage.png")}
           alt="Alishaan Luxury Weddings"
           fill
           className="object-cover md:hidden"
@@ -91,7 +92,7 @@ export default function Homepage() {
         />
         {/* Desktop Background */}
         <Image
-          src="/assets/homepage/home.png"
+          src={getImageUrl("/assets/homepage/home.png")}
           alt="Alishaan Luxury Weddings"
           fill
           className="object-cover hidden md:block"

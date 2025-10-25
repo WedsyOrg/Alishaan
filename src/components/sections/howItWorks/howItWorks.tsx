@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import HOW_IT_WORKS_CONSTANTS from "@/constants/howItWorks.json";
+import { getImageUrl } from "@/utils/imageUtils";
 
 export default function HowItWorks() {
   const [activeStep, setActiveStep] = useState(0);
@@ -399,7 +400,7 @@ export default function HowItWorks() {
             viewport={{ once: false, margin: "-50px" }}
           >
             <Image
-              src="/assets/left.svg"
+              src={getImageUrl("/assets/left.svg")}
               alt="decoration"
               width={200}
               height={5}
@@ -431,7 +432,7 @@ export default function HowItWorks() {
             viewport={{ once: false, margin: "-50px" }}
           >
             <Image
-              src="/assets/right.svg"
+              src={getImageUrl("/assets/right.svg")}
               alt="decoration"
               width={200}
               height={5}
@@ -528,8 +529,8 @@ export default function HowItWorks() {
                     <Image
                       src={
                         activeStep === 0
-                          ? "/assets/how_it_works_2.png"
-                          : "/assets/how_it_works_1.png"
+                          ? getImageUrl("/assets/how_it_works_2.png")
+                          : getImageUrl("/assets/how_it_works_1.png")
                       }
                       alt="How it works visual"
                       fill

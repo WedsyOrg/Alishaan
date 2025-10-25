@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { StoryImage } from "../stories-data";
-
+import { getImageUrl } from "@/utils/imageUtils";
 interface GalleryViewProps {
   stories: StoryImage[];
   currentIndex: number;
@@ -28,7 +28,7 @@ export default function GalleryView({
           aria-label={`View story ${story.id}`}
         >
           <Image
-            src={story.thumbnail}
+            src={getImageUrl(story.thumbnail)}
             alt={`Wedding story thumbnail ${story.id}`}
             width={64}
             height={64}

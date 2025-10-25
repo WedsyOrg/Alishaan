@@ -2,6 +2,7 @@
 
 import { ComponentProps, useEffect, useRef } from "react";
 import Button from "../../ui/Button";
+import { getVideoUrl } from "@/utils/imageUtils";
 
 interface ExploreDatesSectionProps extends ComponentProps<"section"> {
   isVisible?: boolean;
@@ -68,12 +69,12 @@ export default function ExploreDatesSection({
       >
         {/* MP4 format for cross-browser compatibility (Chrome, Firefox, Edge, Safari) */}
         <source
-          src="/assets/exploreDates/Explore - Angana The Courtyard - Avani Leisure (1080p, h264) (1).mp4"
+          src={getVideoUrl("/assets/exploreDates/Explore - Angana The Courtyard - Avani Leisure (1080p, h264) (1).mp4")}
           type="video/mp4"
         />
         {/* Fallback MOV for Safari */}
         <source
-          src="/assets/exploreDates/Explore - Angana The Courtyard - Avani Leisure (1080p, h264) (1).MOV"
+          src={getVideoUrl("/assets/exploreDates/Explore - Angana The Courtyard - Avani Leisure (1080p, h264) (1).MOV")}
           type="video/quicktime"
         />
         {/* Fallback message */}

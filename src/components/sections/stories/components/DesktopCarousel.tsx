@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { StoryImage } from "../stories-data";
-
+import { getImageUrl } from "@/utils/imageUtils";
 interface DesktopCarouselProps {
   stories: StoryImage[];
   currentIndex: number;
@@ -71,7 +71,7 @@ export default function DesktopCarousel({
                 }}
               >
                 <Image
-                  src={story.mainImage}
+                  src={getImageUrl(story.mainImage)}
                   alt={`Wedding story ${story.id}`}
                   fill
                   className="object-cover"
