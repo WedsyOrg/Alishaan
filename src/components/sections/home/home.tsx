@@ -84,7 +84,7 @@ export default function Homepage() {
       <div className="absolute inset-0 z-0">
         {/* Mobile Background */}
         <Image
-          src={getImageUrl("/assets/homepage/homepage.png")}
+          src={getImageUrl("/assets/homepage/homepage.webp")}
           alt="Alishaan Luxury Weddings"
           fill
           className="object-cover md:hidden"
@@ -92,7 +92,7 @@ export default function Homepage() {
         />
         {/* Desktop Background */}
         <Image
-          src={getImageUrl("/assets/homepage/home.png")}
+          src={getImageUrl("/assets/homepage/home.webp")}
           alt="Alishaan Luxury Weddings"
           fill
           className="object-cover hidden md:block"
