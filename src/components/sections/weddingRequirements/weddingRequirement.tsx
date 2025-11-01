@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import axios from "axios";
 import EXPLORE_DATES_CONSTANTS from "@/constants/exploreDates.json";
 import Button from "@/components/ui/Button";
 import { getImageUrl } from "@/utils/imageUtils";
@@ -435,20 +434,17 @@ export default function WeddingRequirement() {
             ) : (
               /* Success Message */
               <div className="text-center">
-                <motion.h3
-                  className="text-2xl font-bold text-[#523329] mb-4"
-                  style={{
-                    fontFamily: "var(--font-spartan)",
-                    fontWeight: "400",
-                  }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, ease: "easeOut" }}
-                >
-                  Thank you for sharing your details
-                </motion.h3>
+                <div className="flex items-center justify-center">
+                  <Image
+                    src={"/Thank_you.gif"}
+                    alt="success"
+                    width={300}
+                    height={100}
+                    unoptimized={true}
+                  />
+                </div>
                 <motion.p
-                  className="text-lg text-[#523329]"
+                  className="text-lg text-[#523329] pt-3"
                   style={{
                     fontFamily: "var(--font-spartan)",
                     fontWeight: "350",
@@ -571,6 +567,8 @@ export default function WeddingRequirement() {
               viewport={{ once: false }}
             >
               {/* Form Header */}
+              {!isSubmitted ? (
+                <>
               <motion.div
                 className="mb-6 text-center"
                 initial={{ opacity: 0 }}
@@ -598,7 +596,7 @@ export default function WeddingRequirement() {
                 </h3>
               </motion.div>
 
-              {!isSubmitted ? (
+              
                 <form onSubmit={handleSubmit} className="space-y-8 px-4">
                   {/* Name Field */}
                   <motion.div
@@ -770,21 +768,19 @@ export default function WeddingRequirement() {
                     />
                   </motion.div>
                 </form>
+                </>
               ) : (
                 /* Success Message */
                 <div className="text-center px-4">
-                  <motion.h3
-                    className="text-2xl font-bold text-[#523329] mb-4"
-                    style={{
-                      fontFamily: "var(--font-spartan)",
-                      fontWeight: "400",
-                    }}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
-                  >
-                    Thank you for sharing your details
-                  </motion.h3>
+                  <div className="flex items-center justify-center">
+                  <Image
+                    src={"/Thank_you.gif"}
+                    alt="success"
+                    width={300}
+                    height={100}
+                    unoptimized={true}
+                  />
+                </div>
                   <motion.p
                     className="text-lg text-[#523329]"
                     style={{
