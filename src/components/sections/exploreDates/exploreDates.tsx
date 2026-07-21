@@ -53,7 +53,7 @@ export default function ExploreDatesSection({
 
   return (
     <section
-      className={`relative min-h-screen w-full overflow-hidden ${className}`}
+      className={`relative min-h-screen w-full overflow-x-clip ${className}`}
       {...props}
     >
       {/* Video Background */}

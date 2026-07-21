@@ -10,6 +10,7 @@ import {
   Cinzel_Decorative,
 } from "next/font/google";
 import localFont from "next/font/local";
+import ScrollRestore from "@/components/layout/ScrollRestore";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -89,6 +90,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} ${poiretOne.variable} ${cinzel.variable} ${dreamAvenue.variable} ${dancingScript.variable} ${spartan.variable} ${cinzelDecorative.variable} antialiased`}
       >
+        <ScrollRestore />
         {children}
       </body>
     </html>
